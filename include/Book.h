@@ -13,6 +13,15 @@ class Book {
 public:
     Book(string,string,string);
     void changeOwner(string);
+
+    const string &getName() const;
+
+    const string &getOriginalOwner() const;
+
+    const string &getCurrentOwner() const;
+
+    const string &getGenere() const;
+
 private:
     string name;
     string originalOwner;
