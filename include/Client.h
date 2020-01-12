@@ -13,8 +13,14 @@ using namespace std;
 class Client {
 public:
     Client(string name, string passcode);
+
+    Client();
+
     void addMessage(int,string);
     void addBook(string,Book*);
+    void removeBook(string,Book*);
+    int getReceiptNum();
+
 //    void subscribe(string);
 //    void unSubscribe(string);
 private:

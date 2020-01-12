@@ -9,7 +9,21 @@
 //
 //int main () {
 //
-//    int id=12;
-//    string num = to_string(id);
-//    cout << num << endl;
+//    const short bufsize = 1024;
+//    char buf[bufsize];
+//    cin.getline(buf, bufsize);
+//    string line(buf);
+//    int len=line.length();
+//    string command [len];
+//    int i = 0;
+//    string msgToSend;
+//    //extracting the input line to array called "command"-->>>could be done with BOOST
+//    for (char c:line) {
+//        if (c!=' ') {
+//            command[i] = command[i] + c;
+//        } else {
+//            i = i + 1;
+//        }
+//    }
+//    cout<< command[1];
 //}

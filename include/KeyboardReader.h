@@ -7,15 +7,17 @@
 
 
 #include "connectionHandler.h"
+#include "Client.h"
 
 class KeyboardReader {
     public:
     KeyboardReader(ConnectionHandler& _handler);
-    void connect();
+    void run();
 
     private:
     ConnectionHandler& handler;
-
+    int subId;
+    int receiptNum;
 };
 
 

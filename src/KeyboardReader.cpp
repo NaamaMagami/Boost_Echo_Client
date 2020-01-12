@@ -10,10 +10,12 @@
 using namespace std;
 using boost::asio::ip::tcp;
 
-KeyboardReader::KeyboardReader(ConnectionHandler& _handler): handler(_handler){}
+KeyboardReader::KeyboardReader(ConnectionHandler& _handler): handler(_handler),subId(0),receiptNum(0){}
 
-void KeyboardReader::connect(){
-    while (1) {
+void KeyboardReader::run(){
+    bool loggedIn=true;
+    while (loggedIn) {
+
         const short bufsize = 1024;
         char buf[bufsize];
         cin.getline(buf, bufsize);
@@ -34,10 +36,10 @@ void KeyboardReader::connect(){
             msgToSend="CONNECT\naccept-version:1.2\nhost:stomp.cs.bgu.ac.il\nlogin:"+command[2]+"\npasscode:"+command[3]+"\n\n^@";
         }
         if (command[0]=="join"){
-            string subId=to_string(id);
-            msgToSend="SUBSCRIBE\ndestination:"+command[1]+"\nid:"+subId+"\nreceipt:"+to_string(receipt)+"\n\n^@";
-            id=id+1;
-            receipt=receipt+1;
+            string stringSubId=to_string(subId);
+            msgToSend="SUBSCRIBE\ndestination:"+command[1]+"\nid:"+stringSubId+"\nreceipt:"+to_string(receiptNum)+"\n\n^@";
+            subId=subId+1;
+            receiptNum=+1;
         }
         if(command[0]=="add"){
             msgToSend="SEND\ndestination:"+command[1]+"\n\n
