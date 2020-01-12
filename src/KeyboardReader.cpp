@@ -33,7 +33,12 @@ void KeyboardReader::run(){
             }
         }
         if (command[0]=="login"){
-            msgToSend="CONNECT\naccept-version:1.2\nhost:stomp.cs.bgu.ac.il\nlogin:"+command[2]+"\npasscode:"+command[3]+"\n\n^@";
+            msgToSend="CONNECT\n"
+                      "accept-version:1.2\n"
+                      "host:stomp.cs.bgu.ac.il\n"
+                      "login:"+command[2]+"\n"
+                      "passcode:"+command[3]+"\n"
+                      "\n^@";
         }
         if (command[0]=="join"){
             string stringSubId=to_string(subId);
