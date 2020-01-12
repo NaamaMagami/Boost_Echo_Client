@@ -3,4 +3,8 @@
 //
 
 #include "Book.h"
-Book::Book(string _name,string )
+Book::Book(string _name,string _originalOwner,string gen):name(_name),originalOwner(_originalOwner),genere(gen),currentOwner(_originalOwner){}
+
+void Book::changeOwner(string newOwner){
+    currentOwner=newOwner;
+};

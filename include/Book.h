@@ -11,10 +11,13 @@ using namespace std;
 
 class Book {
 public:
-    Book(string,string);
+    Book(string,string,string);
+    void changeOwner(string);
 private:
     string name;
-    string borrowedFrom;
+    string originalOwner;
+    string currentOwner;
+    string genere;
 };
 
 
