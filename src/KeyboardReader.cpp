@@ -55,10 +55,14 @@ void KeyboardReader::run(){
         }
         //find out what to do with the receipt number
         if(command[0]=="exit"){
+            string stringSubId=to_string(subId);
+            int thisR=client.getReceiptNum();
             msgToSend="UNSUBSCRIBE\n"
-                      "destination:"+command[1]+"\n"
-                                                "\n";
-            client.addMessage(thisR,"join "+command[1]);
+                      "destination:"+command[1]+"\n"+
+                    "id:"+stringSubId+"\n"+
+                    "receipt:"+to_string(thisR)+"\n"
+                      "\n^@";
+            client.addMessage(thisR,"exit "+command[1]);
 
         }
         if(command[0]=="add"){
@@ -90,37 +94,56 @@ void KeyboardReader::run(){
             client.delFromBooksByGenere(bookToReturn);
 
         }
-
-
-
-        if (!connectionHandler.sendLine(line)) {
-            std::cout << "Disconnected. Exiting...\n" << std::endl;
-            break;
-        }
-        // connectionHandler.sendLine(line) appends '\n' to the message. Therefor we send len+1 bytes.
-        std::cout << "Sent " << len+1 << " bytes to server" << std::endl;
-
-
-        // We can use one of three options to read data from the server:
-        // 1. Read a fixed number of characters
-        // 2. Read a line (up to the newline character using the getline() buffered reader
-        // 3. Read up to the null character
-        std::string answer;
-        // Get back an answer: by using the expected number of bytes (len bytes + newline delimiter)
-        // We could also use: connectionHandler.getline(answer) and then get the answer without the newline char at the end
-        if (!connectionHandler.getLine(answer)) {
-            std::cout << "Disconnected. Exiting...\n" << std::endl;
-            break;
+        if(command[0]=="status"){
+            string gen=command[1];
+            msgToSend="SEND\n"
+                      "destination:"+gen+"\n"
+                                         "\n"+
+                      "book status";
         }
 
-        len=answer.length();
-        // A C string must end with a 0 char delimiter.  When we filled the answer buffer from the socket
-        // we filled up to the \n char - we must make sure now that a 0 char is also present. So we truncate last character.
-        answer.resize(len-1);
-        std::cout << "Reply: " << answer << " " << len << " bytes " << std::endl << std::endl;
-        if (answer == "bye") {
-            std::cout << "Exiting...\n" << std::endl;
-            break;
+        if(command[0]=="logout"){
+            string stringSubId=to_string(subId);
+            int thisR=client.getReceiptNum();
+            msgToSend="DISCONNECT\n"
+                      "destination:"+command[1]+"\n"+
+                      "id:"+stringSubId+"\n"+
+                      "receipt:"+to_string(thisR)+"\n"
+                                                  "\n^@";
+            client.addMessage(thisR,"logout "+command[1]);
+
         }
+
+
+
+//        if (!connectionHandler.sendLine(line)) {
+//            std::cout << "Disconnected. Exiting...\n" << std::endl;
+//            break;
+//        }
+//        // connectionHandler.sendLine(line) appends '\n' to the message. Therefor we send len+1 bytes.
+//        std::cout << "Sent " << len+1 << " bytes to server" << std::endl;
+//
+//
+//        // We can use one of three options to read data from the server:
+//        // 1. Read a fixed number of characters
+//        // 2. Read a line (up to the newline character using the getline() buffered reader
+//        // 3. Read up to the null character
+//        std::string answer;
+//        // Get back an answer: by using the expected number of bytes (len bytes + newline delimiter)
+//        // We could also use: connectionHandler.getline(answer) and then get the answer without the newline char at the end
+//        if (!connectionHandler.getLine(answer)) {
+//            std::cout << "Disconnected. Exiting...\n" << std::endl;
+//            break;
+//        }
+//
+//        len=answer.length();
+//        // A C string must end with a 0 char delimiter.  When we filled the answer buffer from the socket
+//        // we filled up to the \n char - we must make sure now that a 0 char is also present. So we truncate last character.
+//        answer.resize(len-1);
+//        std::cout << "Reply: " << answer << " " << len << " bytes " << std::endl << std::endl;
+//        if (answer == "bye") {
+//            std::cout << "Exiting...\n" << std::endl;
+//            break;
+//        }
     }
 }
