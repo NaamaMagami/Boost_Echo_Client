@@ -12,6 +12,7 @@ using namespace std;
 class Book {
 public:
     Book(string,string,string);
+
     void changeOwner(string);
 
     const string &getName() const;
@@ -22,11 +23,14 @@ public:
 
     const string &getGenere() const;
 
+    const bool &getcurrentlyOnInventory() const;
+
 private:
     string name;
-    string originalOwner;
-    string currentOwner;
+    bool currentlyOnInventory;
+    string previousOwner;
     string genere;
+
 };
 
 

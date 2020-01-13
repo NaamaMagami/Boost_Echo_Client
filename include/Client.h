@@ -31,6 +31,8 @@ public:
 
     Book *getFromBooksByGenere(string gen, string bookName);
 
+    Book* containesBook(string bookName);
+
 private:
     string name;
     string passcode;

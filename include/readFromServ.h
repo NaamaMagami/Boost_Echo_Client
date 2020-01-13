@@ -14,7 +14,7 @@ public:
     void run();
 private:
     ConnectionHandler &handler ;
-
+    Client& client;
 
 
 };

@@ -36,6 +36,17 @@ void Client::addBook(string topic, Book * book) {
     }
     booksByGenere.at(topic)->push_back(book);
 }
+Book* Client::containesBook(string bookName) {
+        for (map<string, vector<Book*>*>::const_iterator it = booksByGenere.begin(); it != booksByGenere.end(); ++it){
+            for (Book* book : *it->second){
+                if (book->getName()==bookName){
+                    return book;
+                }
+            }
+        }
+        return nullptr;
+
+}
 
 
 void Client::removeBook(string genere,Book * book) {

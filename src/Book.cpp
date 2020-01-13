@@ -3,10 +3,9 @@
 //
 
 #include "Book.h"
-Book::Book(string _name,string _previousOwner,string gen):name(_name),originalOwner(_previousOwner),genere(gen),currentOwner(_originalOwner){}
+Book::Book(string _name,string _previousOwner,string gen):name(_name),previousOwner(_previousOwner),genere(gen),currentlyOnInventory(true){}
 
 void Book::changeOwner(string newOwner){
-    currentOwner=newOwner;
 };
 
 const string &Book::getName() const {
@@ -14,13 +13,14 @@ const string &Book::getName() const {
 }
 
 const string &Book::getpreviousOwner() const {
-    return originalOwner;
+    return previousOwner;
 }
 
-const string &Book::getCurrentOwner() const {
-    return currentOwner;
-}
 
 const string &Book::getGenere() const {
     return genere;
+}
+
+const bool &Book::getcurrentlyOnInventory() const {
+    return currentlyOnInventory;
 }
