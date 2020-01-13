@@ -9,7 +9,7 @@ link_libraries("-lboost_system")
 add_executable(Boost_Echo_Client
     include/connectionHandler.h
     src/connectionHandler.cpp
-    src/echoClient.cpp src/Client.cpp include/Client.h src/check.cpp include/check.h src/KeyboardReader.cpp include/KeyboardReader.h src/Book.cpp include/Book.h)
+    src/echoClient.cpp src/Client.cpp include/Client.h src/check.cpp include/check.h src/KeyboardReader.cpp include/KeyboardReader.h src/Book.cpp include/Book.h src/readFromServ.cpp include/readFromServ.h)
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 
