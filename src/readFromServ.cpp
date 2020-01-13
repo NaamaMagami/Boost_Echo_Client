@@ -29,9 +29,10 @@
                 }
             }
             string firstWord=words[0];
-            string body = words[5];
+
 
             if (firstWord=="MESSAGE"){
+                string body = words[5];
                 string topic=words[3].substr(12,words[3].size());
                 string toPrint=topic+":"+body;
                 cout<<toPrint<<endl;
@@ -127,12 +128,14 @@
                 else if(bodyArray[0]=="book"){
                     string msgToSend = "SEND\n"
                                        "destination:" +topic+ "\n\n" +
-                                       client.getInventory()+
+                                       client.getInventory(topic)+
                                        "\n^@";
                 }
             }
 
             else if (firstWord=="RECEIPT"){
+                string receiptId=words[1].substr(11,words[1].size());
+                client.getReceipt(stoi(receiptId));
 
             }
 

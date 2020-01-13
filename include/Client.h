@@ -23,8 +23,6 @@ public:
 
     const string &getName() const;
 
-//    void subscribe(string);
-//    void unSubscribe(string);
     void addToWishList(Book *book);
 
     Book *getFromBooksByGenere(string gen, string bookName);
@@ -36,13 +34,17 @@ public:
     bool wishListContain(string name);
 
     string getInventory(string);
+    void addToSubs(string topic);
+    void removeFromSubs(string topic);
+    string getReceipt(int num);
+
 
 private:
     string name;
     string passcode;
     vector<Book*>* wishList;
     map<string,vector<Book*>*>booksByGenere;
-//    vector<string> subs;
+    vector<string> subs;
     int receiptNum;
     map<int,string>messsageByReceipt;
 

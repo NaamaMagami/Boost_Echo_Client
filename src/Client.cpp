@@ -15,6 +15,21 @@ Client::Client(string _name,string _passcode): name(_name), passcode(_passcode){
     vector<string> subs;
 }
 
+void Client::addToSubs(string topic){
+    subs.push_back(topic);
+}
+
+void Client::removeFromSubs(string topic){
+    vector<string>::iterator iter ;
+    for (iter=subs.begin();iter<subs.end();++iter){
+        if ((*iter)==topic){
+            subs.erase(iter);
+        }
+    }
+}
+string Client::getReceipt(int num){
+    return messsageByReceipt.at(num);
+}
 const string &Client::getName() const {
     return name;
 }
@@ -55,10 +70,9 @@ Book* Client::containesBook(string bookName) {
 string Client:: getInventory(string topic) {
     string temp="";
     for  (Book* book : *(booksByGenere.at(topic))){
-        temp=temp+",";
+        temp=temp+","+book->getName();
     }
-    string output = temp.substr(0,temp.size()-1);
-    return output;
+    return temp;
 }
 
 Book* Client::containedBeforeBook(string bookName) {
