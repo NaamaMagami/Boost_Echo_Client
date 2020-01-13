@@ -69,7 +69,8 @@ void KeyboardReader::run(){
             msgToSend="SEND\n"
                       "destination:"+command[1]+"\n"
                       "\n"+
-                      client.getName()+" has added the book "+command[2];
+                      client.getName()+" has added the book "+command[2]+"\n"
+                                                                         "\n^@";
             Book* bookToAdd= new Book(command[2], client.getName(), command[1]);
             client.addBook(command[1],bookToAdd);
         }
@@ -79,7 +80,8 @@ void KeyboardReader::run(){
             msgToSend="SEND\n"
                       "destination:"+gen+"\n"
                        "\n"+
-                      client.getName()+" wish to borrow "+bookName;
+                      client.getName()+" wish to borrow "+bookName+"\n"
+                                                                   "\n^@";
             Book* bookToAdd= new Book(command[2], client.getName(), command[1]);
             client.addToWishList(bookToAdd);
         }
@@ -90,7 +92,8 @@ void KeyboardReader::run(){
             msgToSend="SEND\n"
                       "destination:"+gen+"\n"
                                          "\n"+
-                      " “Returning "+bookName+" to "+bookToReturn->getpreviousOwner();
+                      " “Returning "+bookName+" to "+bookToReturn->getpreviousOwner()+"\n"
+                        "\n^@";
             client.delFromBooksByGenere(bookToReturn);
 
         }
@@ -99,7 +102,9 @@ void KeyboardReader::run(){
             msgToSend="SEND\n"
                       "destination:"+gen+"\n"
                                          "\n"+
-                      "book status";
+                      "book status"+"\n"
+                                    "\n^@";
+            handler.sendLine(msgToSend);
         }
 
         if(command[0]=="logout"){
@@ -111,7 +116,7 @@ void KeyboardReader::run(){
                       "receipt:"+to_string(thisR)+"\n"
                                                   "\n^@";
             client.addMessage(thisR,"logout "+command[1]);
-
+            handler.sendLine(msgToSend);
         }
 
 
