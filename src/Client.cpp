@@ -11,7 +11,12 @@ Client::Client(string _name,string _passcode): name(_name), passcode(_passcode){
     map<string,vector<Book*>> booksByGenere;
     receiptNum=0;
     map<int,string>messsageByReceipt;
+    wishList = new vector<Book*>;
     vector<string> subs;
+}
+
+const string &Client::getName() const {
+    return name;
 }
 
 void Client::addMessage(int receipt, string message) {
@@ -32,6 +37,7 @@ void Client::addBook(string topic, Book * book) {
     booksByGenere.at(topic)->push_back(book);
 }
 
+
 void Client::removeBook(string genere,Book * book) {
     vector<Book*>::iterator iter;
     if (booksByGenere.at(genere)!= nullptr){
@@ -41,6 +47,38 @@ void Client::removeBook(string genere,Book * book) {
         }
     }
 }
+
+Book* Client::getFromBooksByGenere(string gen,string bookName){
+
+    if(booksByGenere.at(gen)== nullptr)
+        return nullptr;
+    for(Book* b: *booksByGenere.at(gen)){
+        if(b->getName()==bookName)
+            return b;
+    }
+}
+
+
+
+    void Client::delFromBooksByGenere(Book* book){
+        vector<Book*>::iterator iter;
+        for (iter = booksByGenere.at(book->getGenere())->begin() ; iter <booksByGenere.at(book->getGenere())->end();iter++){
+            if(iter.getName()==book->getName())
+                booksByGenere.at(book->getGenere())->erase(iter);
+        }
+
+    }
+
+bool Client::wishListContain(Book * book) {
+    for(Book* b:*wishList){
+        if(b->getName()==book->getName())
+            return true;
+    }
+    return false;
+}
+    void Client::addToWishList(Book* book){
+    wishList->push_back(book);
+    }
 
 //void Client::subscribe(string genere) {
 //    subs.push_back(genere);

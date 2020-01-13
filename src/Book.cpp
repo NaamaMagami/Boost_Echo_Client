@@ -3,7 +3,7 @@
 //
 
 #include "Book.h"
-Book::Book(string _name,string _originalOwner,string gen):name(_name),originalOwner(_originalOwner),genere(gen),currentOwner(_originalOwner){}
+Book::Book(string _name,string _previousOwner,string gen):name(_name),originalOwner(_previousOwner),genere(gen),currentOwner(_originalOwner){}
 
 void Book::changeOwner(string newOwner){
     currentOwner=newOwner;
@@ -13,7 +13,7 @@ const string &Book::getName() const {
     return name;
 }
 
-const string &Book::getOriginalOwner() const {
+const string &Book::getpreviousOwner() const {
     return originalOwner;
 }
 

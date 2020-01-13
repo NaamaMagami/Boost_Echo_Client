@@ -11,13 +11,17 @@
 
 class KeyboardReader {
     public:
-    KeyboardReader(ConnectionHandler& _handler);
+//    KeyboardReader(ConnectionHandler& _handler);
+
+    KeyboardReader(ConnectionHandler &_handler, Client _client);
+
     void run();
 
     private:
     ConnectionHandler& handler;
     int subId;
-    int receiptNum;
+//    int receiptNum;
+        Client client;
 };
 
 

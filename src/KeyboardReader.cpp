@@ -10,7 +10,7 @@
 using namespace std;
 using boost::asio::ip::tcp;
 
-KeyboardReader::KeyboardReader(ConnectionHandler& _handler): handler(_handler),subId(0),receiptNum(0){}
+KeyboardReader::KeyboardReader(ConnectionHandler& _handler, Client _client): handler(_handler),client(_client),subId(0){}
 
 void KeyboardReader::run(){
     bool loggedIn=true;
@@ -40,16 +40,59 @@ void KeyboardReader::run(){
                       "passcode:"+command[3]+"\n"
                       "\n^@";
         }
+        //add to the map "join genere"
         if (command[0]=="join"){
             string stringSubId=to_string(subId);
-            msgToSend="SUBSCRIBE\ndestination:"+command[1]+"\nid:"+stringSubId+"\nreceipt:"+to_string(receiptNum)+"\n\n^@";
+            int thisR=client.getReceiptNum();
+            msgToSend="SUBSCRIBE\n"
+                      "destination:"+command[1]+"\n"
+                       "id:"+stringSubId+"\n"
+                      "receipt:"+to_string(thisR)+"\n"
+                       "\n^@";
             subId=subId+1;
-            receiptNum=+1;
-        }
-        if(command[0]=="add"){
-            msgToSend="SEND\ndestination:"+command[1]+"\n\n
+            client.addMessage(thisR,"join "+command[1]);
 
         }
+        //find out what to do with the receipt number
+        if(command[0]=="exit"){
+            msgToSend="UNSUBSCRIBE\n"
+                      "destination:"+command[1]+"\n"
+                                                "\n";
+            client.addMessage(thisR,"join "+command[1]);
+
+        }
+        if(command[0]=="add"){
+            msgToSend="SEND\n"
+                      "destination:"+command[1]+"\n"
+                      "\n"+
+                      client.getName()+" has added the book "+command[2];
+            Book* bookToAdd= new Book(command[2], client.getName(), command[1]);
+            client.addBook(command[1],bookToAdd);
+        }
+        if(command[0]=="borrow"){
+            string gen=command[1];
+            string bookName=command[2];
+            msgToSend="SEND\n"
+                      "destination:"+gen+"\n"
+                       "\n"+
+                      client.getName()+" wish to borrow "+bookName;
+            Book* bookToAdd= new Book(command[2], client.getName(), command[1]);
+            client.addToWishList(bookToAdd);
+        }
+        if(command[0]=="return"){
+            string gen=command[1];
+            string bookName=command[2];
+            Book* bookToReturn=client.getFromBooksByGenere(gen,bookName);
+            msgToSend="SEND\n"
+                      "destination:"+gen+"\n"
+                                         "\n"+
+                      " “Returning "+bookName+" to "+bookToReturn->getpreviousOwner();
+            client.delFromBooksByGenere(bookToReturn);
+
+        }
+
+
+
         if (!connectionHandler.sendLine(line)) {
             std::cout << "Disconnected. Exiting...\n" << std::endl;
             break;

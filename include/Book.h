@@ -16,7 +16,7 @@ public:
 
     const string &getName() const;
 
-    const string &getOriginalOwner() const;
+    const string &getpreviousOwner() const;
 
     const string &getCurrentOwner() const;
 
