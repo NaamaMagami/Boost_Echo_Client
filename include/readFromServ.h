@@ -10,9 +10,11 @@
 
 class readFromServ {
 public:
-    readFromServ(ConnectionHandler &);
+    readFromServ(ConnectionHandler &,Client& );
+    void run();
 private:
     ConnectionHandler &handler ;
+
 
 
 };
