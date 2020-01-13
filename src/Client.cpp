@@ -34,12 +34,16 @@ void Client::addBook(string topic, Book * book) {
     if (booksByGenere.at(topic) == nullptr){
         booksByGenere.insert(make_pair(topic,new vector<Book*>));
     }
-    booksByGenere.at(topic)->push_back(book);
+    if(containedBeforeBook(book->getName()))
+        book->setcurrentlyOnInventory(true);
+    else {
+        booksByGenere.at(topic)->push_back(book);
+    }
 }
 Book* Client::containesBook(string bookName) {
         for (map<string, vector<Book*>*>::const_iterator it = booksByGenere.begin(); it != booksByGenere.end(); ++it){
             for (Book* book : *it->second){
-                if (book->getName()==bookName){
+                if (book->getName()==bookName & book->getcurrentlyOnInventory()){
                     return book;
                 }
             }
@@ -48,13 +52,34 @@ Book* Client::containesBook(string bookName) {
 
 }
 
+string Client:: getInventory(string topic) {
+    string temp="";
+    for  (Book* book : *(booksByGenere.at(topic))){
+        temp=temp+",";
+    }
+    string output = temp.substr(0,temp.size()-1);
+    return output;
+}
+
+Book* Client::containedBeforeBook(string bookName) {
+    for (map<string, vector<Book*>*>::const_iterator it = booksByGenere.begin(); it != booksByGenere.end(); ++it){
+        for (Book* book : *it->second){
+            if (book->getName()==bookName & !book->getcurrentlyOnInventory()){
+                return book;
+            }
+        }
+    }
+    return nullptr;
+
+}
+
 
 void Client::removeBook(string genere,Book * book) {
     vector<Book*>::iterator iter;
     if (booksByGenere.at(genere)!= nullptr){
-        for (iter = booksByGenere.at(genere)->begin() ; iter <booksByGenere.at(genere)->end();iter++){
-            if (*iter == book)
-                booksByGenere.at(genere)->erase(iter);
+        for (iter = booksByGenere.at(genere)->begin() ; iter <booksByGenere.at(genere)->end();++iter){
+            if ((*iter)->getName() == book->getName())
+                (*iter)->setcurrentlyOnInventory(false);
         }
     }
 }
@@ -69,20 +94,9 @@ Book* Client::getFromBooksByGenere(string gen,string bookName){
     }
 }
 
-
-
-    void Client::delFromBooksByGenere(Book* book){
-        vector<Book*>::iterator iter;
-        for (iter = booksByGenere.at(book->getGenere())->begin() ; iter <booksByGenere.at(book->getGenere())->end();iter++){
-            if(iter.getName()==book->getName())
-                booksByGenere.at(book->getGenere())->erase(iter);
-        }
-
-    }
-
-bool Client::wishListContain(Book * book) {
+bool Client::wishListContain(string name) {
     for(Book* b:*wishList){
-        if(b->getName()==book->getName())
+        if(b->getName()==name)
             return true;
     }
     return false;
@@ -91,14 +105,4 @@ bool Client::wishListContain(Book * book) {
     wishList->push_back(book);
     }
 
-//void Client::subscribe(string genere) {
-//    subs.push_back(genere);
-//}
-//
-//void Client::unSubscribe(string genere) {
-//    for (int i=0; i<subs.size();++i){
-//        if (subs.at(i)==genere)
-//            subs.erase(i);
-//    }
-//}
 

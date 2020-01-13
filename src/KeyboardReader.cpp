@@ -97,12 +97,10 @@ void KeyboardReader::run(){
             msgToSend="SEND\n"
                       "destination:"+gen+"\n"
                                          "\n"+
-                      " “Returning "+bookName+" to "+bookToReturn->getpreviousOwner()+"\n"
+                      " Returning "+bookName+" to "+bookToReturn->getpreviousOwner()+"\n"
                         "\n^@";
             handler.sendLine(msgToSend);
-            client.delFromBooksByGenere(bookToReturn);
-
-
+            client.removeBook(gen,bookToReturn);
         }
         if(command[0]=="status"){
             string gen=command[1];

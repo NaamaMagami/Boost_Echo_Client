@@ -25,6 +25,10 @@ public:
 
     const bool &getcurrentlyOnInventory() const;
 
+    void setcurrentlyOnInventory(bool set);
+
+    string setpreviousOwner(string);
+
 private:
     string name;
     bool currentlyOnInventory;
