@@ -6,6 +6,7 @@
 #include <Client.h>
 #include <readFromServ.h>
 #include <thread>
+#include <KeyboardReader.h>
 #include "StompBookClubClient.h"
 #include "connectionHandler.cpp"
 
@@ -59,33 +60,50 @@ int main (int argc, char *argv[]) {
 
             ConnectionHandler* handler= new ConnectionHandler(serverHost,port);
             handler->sendLine(msgToSend);
-            Client* client = new Client(userName,passcode);
-            readFromServ* socketReader = new readFromServ(*handler,*client);
 
-            thread socketThread (&readFromServ::run,socketReader);
 
-            wasThereAConnection=true;
+            string command="";
+            if (!(handler->getFrameAscii(command,'\0'))) {
+                cout << "Could not connect to server" << endl;
+            }
+            else{
+                    string words[command.size()];
+                    int i = 0;
+                    for (char c:command) {
+                        if (c != '\n') {
+                            words[i] = words[i] + c;
+                        } else {
+                            i = i + 1;
+                        }
+                    }
+                    string firstWord = words[0];
+
+                    if (firstWord == "ERROR") {
+                        string user = words[2].substr(8,11);
+                        string wrong = words[2].substr(8,12);
+                        if (user=="User") {
+                            cout<<"User already logged in"<<endl;
+                        }
+                        else if (wrong =="Wrong") {
+                            cout<<"Wrong password"<<endl;
+                        }
+                    }
+                    else if (firstWord == "CONNECTED") {
+                        Client *client = new Client(userName, passcode);
+                        readFromServ *socketReader = new readFromServ(*handler, *client);
+                        KeyboardReader* keyboardReader = new KeyboardReader(*handler,*client);
+
+                        thread socketThread(&readFromServ::run, socketReader);
+                        thread keyboardThread(&KeyboardReader::run, keyboardReader);
+                        wasThereAConnection = true;
+
+                        socketThread.join();
+                        keyboardThread.join();
+
+                        wasThereAConnection=false;
+                    }
+                }
         }
     }
-}
-const short bufsize = 1024;
-char buf[bufsize];
-cin.getline(buf, bufsize);
-string line(buf);
-int len = line.length();
-string command[len];
-int i = 0;
-string msgToSend;
-//extracting the input line to array called "command"-->>>could be done with BOOST
-for (char c:line) {
-if (c != ' ') {
-command[i] = command[i] + c;
-} else {
-i = i + 1;
-}
-}
-if (command[0] == "login") {
 
-}
-}
 }
