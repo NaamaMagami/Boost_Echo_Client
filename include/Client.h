@@ -6,6 +6,8 @@
 #define BOOST_ECHO_CLIENT_CLIENT_H
 
 #include "Book.h"
+#include <vector>
+#include <map>
 
 using namespace std;
 
@@ -47,11 +49,10 @@ private:
     string name;
     string passcode;
     vector<Book*>* wishList;
-    map<string,vector<Book*>*>booksByGenere;
+    map<string,vector<Book*>*> booksByGenere;
     vector<string> subs;
     int receiptNum;
     map<int,string>messsageByReceipt;
-
 };
 
 

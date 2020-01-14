@@ -8,7 +8,7 @@
 #include <thread>
 #include <KeyboardReader.h>
 #include "StompBookClubClient.h"
-#include "connectionHandler.cpp"
+#include "connectionHandler.h"
 
 using namespace std;
 using boost::asio::ip::tcp;
@@ -46,7 +46,7 @@ int main (int argc, char *argv[]) {
                     serverHost=serverHost+c;
                     j=j+1;
                 } else {
-                    serverPort=hostAndPort.substr(j,hostAndPort.size());
+                    serverPort=hostAndPort.substr(j+1,hostAndPort.size());
                     break;
                 }
             }
@@ -56,9 +56,10 @@ int main (int argc, char *argv[]) {
                         "accept-version:1.2\n"
                         "host:"+myHost+"\n"
                                        "login:" + userName + "\n"
-                                                             "passcode:" + passcode + "\n""\n^@";
-
+                                                             "passcode:" + passcode + "\n\n"+'\0';
+cout<<msgToSend<<endl;
             ConnectionHandler* handler= new ConnectionHandler(serverHost,port);
+            handler->connect();
             handler->sendLine(msgToSend);
 
 

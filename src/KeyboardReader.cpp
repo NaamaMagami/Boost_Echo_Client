@@ -36,15 +36,15 @@ void KeyboardReader::run(){
                     i = i + 1;
                 }
             }
-            if (command[0] == "login") {
-                msgToSend = "CONNECT\n"
-                            "accept-version:1.2\n"
-                            "host:stomp.cs.bgu.ac.il\n"
-                            "login:" + command[2] + "\n"
-                                                    "passcode:" + command[3] + "\n"
-                                                                               "\n^@";
-                handler.sendLine(msgToSend);
-            }
+//            if (command[0] == "login") {
+//                msgToSend = "CONNECT\n"
+//                            "accept-version:1.2\n"
+//                            "host:stomp.cs.bgu.ac.il\n"
+//                            "login:" + command[2] + "\n"
+//                                                    "passcode:" + command[3] + "\n"
+//                                                                               "\n^@";
+//                handler.sendLine(msgToSend);
+//            }
             //add to the map "join genere"
             if (command[0] == "join") {
                 string stringSubId = to_string(subId);
@@ -64,7 +64,6 @@ void KeyboardReader::run(){
                 string stringSubId = to_string(subId);
                 int thisR = client.getReceiptNum();
                 msgToSend = "UNSUBSCRIBE\n"
-                            "destination:" + command[1] + "\n" +
                             "id:" + stringSubId + "\n" +
                             "receipt:" + to_string(thisR) + "\n"
                                                             "\n^@";
@@ -75,7 +74,7 @@ void KeyboardReader::run(){
             if (command[0] == "add") {
                 msgToSend = "SEND\n"
                             "destination:" + command[1] + "\n"
-                                                          "\n" +
+                                                          "\n"+
                             client.getName() + " has added the book " + command[2] + "\n"
                                                                                      "\n^@";
                 Book *bookToAdd = new Book(command[2], client.getName(), command[1]);

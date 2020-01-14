@@ -135,6 +135,7 @@ void readFromServ::run() {
 
         else if (firstWord=="RECEIPT"){
             string receiptId=words[1].substr(11,words[1].size());
+            cout<<receiptId<<endl;
             string action=client.getReceipt(stoi(receiptId));
             string recieptArray[action.size()];
             int j=0;

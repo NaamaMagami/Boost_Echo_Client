@@ -1,22 +1,31 @@
-#ifndef CONNECTION_HANDLER__
-#define CONNECTION_HANDLER__
+
+#ifndef BOOST_ECHO_CLIENT_CONNECTION_HANDLE_H
+#define BOOST_ECHO_CLIENT_CONNECTION_HANDLE_H
 
 #include <string>
 #include <iostream>
 #include <boost/asio.hpp>
 
 using boost::asio::ip::tcp;
-
+using std::cin;
+using std::cout;
+using std::cerr;
+using std::endl;
+using std::string;
 class ConnectionHandler {
+
 private:
-    const std::string host_;
+    const string host_;
     const short port_;
     boost::asio::io_service io_service_;   // Provides core I/O functionality
     tcp::socket socket_;
     bool isClosed;
+
 public:
     ConnectionHandler(std::string host, short port);
+
     virtual ~ConnectionHandler();
+
     bool getIsClosed();
     // Connect to the remote machine
     bool connect();

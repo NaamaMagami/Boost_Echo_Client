@@ -46,7 +46,7 @@ int Client::getReceiptNum(){
 Client::Client() {}
 
 void Client::addBook(string topic, Book * book) {
-    if (booksByGenere.at(topic) == nullptr){
+    if (booksByGenere.count(topic) == 0){
         booksByGenere.insert(make_pair(topic,new vector<Book*>));
     }
     if(containedBeforeBook(book->getName()))
@@ -90,7 +90,7 @@ Book* Client::containedBeforeBook(string bookName) {
 
 void Client::removeBook(string genere,Book * book) {
     vector<Book*>::iterator iter;
-    if (booksByGenere.at(genere)!= nullptr){
+    if (booksByGenere.count(genere)>0){
         for (iter = booksByGenere.at(genere)->begin() ; iter <booksByGenere.at(genere)->end();++iter){
             if ((*iter)->getName() == book->getName())
                 (*iter)->setcurrentlyOnInventory(false);
@@ -100,7 +100,7 @@ void Client::removeBook(string genere,Book * book) {
 
 Book* Client::getFromBooksByGenere(string gen,string bookName){
 
-    if(booksByGenere.at(gen)== nullptr)
+    if(booksByGenere.count(gen)==0)
         return nullptr;
     for(Book* b: *booksByGenere.at(gen)){
         if(b->getName()==bookName)
