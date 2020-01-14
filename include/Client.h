@@ -34,10 +34,14 @@ public:
     bool wishListContain(string name);
 
     string getInventory(string);
+
     void addToSubs(string topic);
+
     void removeFromSubs(string topic);
+
     string getReceipt(int num);
 
+    void clearClient();
 
 private:
     string name;

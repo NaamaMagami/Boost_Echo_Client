@@ -56,14 +56,14 @@ void Client::addBook(string topic, Book * book) {
     }
 }
 Book* Client::containesBook(string bookName) {
-        for (map<string, vector<Book*>*>::const_iterator it = booksByGenere.begin(); it != booksByGenere.end(); ++it){
-            for (Book* book : *it->second){
-                if (book->getName()==bookName & book->getcurrentlyOnInventory()){
-                    return book;
-                }
+    for (map<string, vector<Book*>*>::const_iterator it = booksByGenere.begin(); it != booksByGenere.end(); ++it){
+        for (Book* book : *it->second){
+            if (book->getName()==bookName & book->getcurrentlyOnInventory()){
+                return book;
             }
         }
-        return nullptr;
+    }
+    return nullptr;
 
 }
 
@@ -115,8 +115,20 @@ bool Client::wishListContain(string name) {
     }
     return false;
 }
-    void Client::addToWishList(Book* book){
+void Client::addToWishList(Book* book){
     wishList->push_back(book);
+}
+
+void Client::clearClient(){
+    for (map<string, vector<Book*>*>::const_iterator it = booksByGenere.begin(); it != booksByGenere.end(); ++it){
+        for (int i=0; i< (it)->second->size();++i){
+            delete((*it).second->at(i));
+        }
+        delete((*it).second);
     }
+    for (int i=0;i<wishList->size();++i){
+        delete(wishList->at(i));
+    }
+}
 
 

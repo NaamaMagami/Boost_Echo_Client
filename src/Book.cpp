@@ -15,8 +15,8 @@ const string &Book::getName() const {
 const string &Book::getpreviousOwner() const {
     return previousOwner;
 }
- string Book::setpreviousOwner(string owner)  {
-     previousOwner=owner;
+string Book::setpreviousOwner(string owner)  {
+    previousOwner=owner;
 }
 
 
@@ -28,5 +28,5 @@ const bool &Book::getcurrentlyOnInventory() const {
     return currentlyOnInventory;
 }
 void Book::setcurrentlyOnInventory(bool set) {
-     currentlyOnInventory=set;
+    currentlyOnInventory=set;
 }

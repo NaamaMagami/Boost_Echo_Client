@@ -16,7 +16,6 @@ private:
     ConnectionHandler &handler ;
     Client& client;
 
-
 };
 
 

@@ -10,18 +10,17 @@
 #include "Client.h"
 
 class KeyboardReader {
-    public:
+public:
 //    KeyboardReader(ConnectionHandler& _handler);
 
     KeyboardReader(ConnectionHandler &_handler, Client _client);
 
     void run();
-
-    private:
+    void close();
+private:
     ConnectionHandler& handler;
     int subId;
-//    int receiptNum;
-        Client client;
+    Client client;
 };
 
 
