@@ -19,6 +19,7 @@ int main (int argc, char *argv[]) {
     bool wasThereAConnection = false;
 
     while (!wasThereAConnection) {
+        cout<<"entered while"<<endl;
         const short bufsize = 1024;
         char buf[bufsize];
         cin.getline(buf, bufsize);
@@ -74,6 +75,7 @@ int main (int argc, char *argv[]) {
 
             if (!(handler->getLine(command))) {
                 cout << "Could not connect to server**" << endl;
+                handler->close();
             }
             else{
                     string words[command.size()];
@@ -96,6 +98,7 @@ int main (int argc, char *argv[]) {
                         else if (wrong =="Wrong") {
                             cout<<"Wrong password"<<endl;
                         }
+                        handler->close();
                     }
                     else if (firstWord == "CONNECTED") {
                         cout<<"user got CONNECTED"<<endl;
@@ -110,7 +113,10 @@ int main (int argc, char *argv[]) {
 
                         socketThread.join();
                         keyboardThread.join();
-                    cout<<"hi"<<endl;
+                        handler->~ConnectionHandler();
+                        delete(socketReader);
+                        delete(keyboardReader);
+                        delete(client);
                         wasThereAConnection=false;
                     }
                 }

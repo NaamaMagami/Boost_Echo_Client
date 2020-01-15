@@ -23,6 +23,8 @@ Client::Client(string _name, string _passcode): name(_name), passcode(_passcode)
 
 void Client::addToSubs(string topic){
     subs->push_back(topic);
+    vector<Book*> vec
+    booksByGenere->insert(make_pair(topic,(new vector<Book*>*)));
 }
 void Client::addTotopicsAndSubsId(string topic,string subId){
     topicsAndSubsId->insert(make_pair(topic,subId));
@@ -107,6 +109,8 @@ Book* Client::containesBook(string bookName) {
 
 string Client:: getInventory(string topic) {
     string temp="";
+    if(booksByGenere->at(topic)->empty())
+        return "";
     for  (Book* book : *(booksByGenere->at(topic))){
         temp=temp+book->getName()+",";
     }

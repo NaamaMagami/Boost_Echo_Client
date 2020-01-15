@@ -12,6 +12,9 @@ using namespace std;
 
 readFromServ::readFromServ(ConnectionHandler& _handler1,Client& _client):handler(_handler1),client(_client){}
 
+//readFromServ::~readFromServ() {
+//    close();
+//}
 
 void readFromServ::run() {
     bool connected=true;
@@ -59,10 +62,11 @@ void readFromServ::run() {
                 for (int k = 4; k < body.size(); ++k) {
                     if (bodyArray[k] != "") {
                         bookName = bookName + bodyArray[k];
-
                     }
+                    cout<<bookName<<endl;
                     Book *myBook = client.containesBook(bookName);
                     if (myBook != nullptr) {
+                        cout<<"not null"<<endl;
                         string msgToSend = "SEND\n"
                                            "destination:" + myBook->getGenere() + "\n\n" +
                                            client.getName() + " has the book " + myBook->getName() +
@@ -140,10 +144,10 @@ void readFromServ::run() {
         }
 
         else if (firstWord=="RECEIPT"){
-
             string receiptId=words[1].substr(11,words[1].size());
             cout<<"got receipt id from server  "+receiptId<<endl;
             string action=client.getReceipt(stoi(receiptId));
+            cout<<"***after action  "+receiptId<<endl;
             string recieptArray[action.size()];
             int j=0;
             for (char c:action) {
@@ -164,9 +168,11 @@ void readFromServ::run() {
                 cout<<"Joined club "+recieptArray[1]<<endl;
             }
             else if (first=="logout"){
+                connected= false;
                 client.clearClient();
                 handler.close();
-                connected= false;
+                cout<<"**** inside logout"+receiptId<<endl;
+
             }
             else if ("exit"){
                 client.removeFromSubs(recieptArray[1]);

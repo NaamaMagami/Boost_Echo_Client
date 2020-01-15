@@ -11,6 +11,7 @@
 class readFromServ {
 public:
     readFromServ(ConnectionHandler &,Client& );
+//    virtual ~readFromServ();
     void run();
 private:
     ConnectionHandler &handler ;

@@ -99,7 +99,7 @@ void KeyboardReader::run(){
                 msgToSend = "SEND\n"
                             "destination:" + gen + "\n"
                                                    "\n" +
-                            client.getName() + " wish to borrow " + bookName + "\n"
+                            client.getName() + " wish to borrow" + bookName + "\n"
                                                                                "\n";
                 Book *bookToAdd = new Book(bookName, client.getName(), command[1]);
                 client.addToWishList(bookToAdd);
@@ -135,6 +135,7 @@ void KeyboardReader::run(){
                             "receipt:" + to_string(thisR) + "\n\n";
                 client.addMessage(thisR, "logout");
                 handler.sendLine(msgToSend);
+//                break;
             }
 
 
