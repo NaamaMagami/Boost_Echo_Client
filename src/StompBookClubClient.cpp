@@ -118,6 +118,8 @@ int main (int argc, char *argv[]) {
                         delete(keyboardReader);
                         delete(client);
                         wasThereAConnection=false;
+                        cout<<"Goodbye!"<<endl;
+                        terminate();
                     }
                 }
         }
