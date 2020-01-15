@@ -52,8 +52,8 @@ void KeyboardReader::run(){
                 msgToSend = "SUBSCRIBE\n"
                             "destination:" + command[1] + "\n"
                                                           "id:" + stringSubId + "\n"
-                                                                                "receipt:" + to_string(thisR) + "\n"
-                                                                                                                "\n";
+                                                                                "receipt:" + to_string(thisR) + "\n";
+                client.addTotopicsAndSubsId(command[1],stringSubId);
                 subId = subId + 1;
                 client.addMessage(thisR, "join " + command[1]);
                 handler.sendLine(msgToSend);
@@ -61,15 +61,17 @@ void KeyboardReader::run(){
             }
             //find out what to do with the receipt number
             if (command[0] == "exit") {
-                string stringSubId = to_string(subId);
+
+                string stringSubId = client.getSubIdByTopic(command[1]);
                 int thisR = client.getReceiptNum();
                 msgToSend = "UNSUBSCRIBE\n"
                             "id:" + stringSubId + "\n" +
                             "receipt:" + to_string(thisR) + "\n"
                                                             "\n";
+
                 client.addMessage(thisR, "exit " + command[1]);
                 handler.sendLine(msgToSend);
-
+                client.removeFromTopicsAndSubsId(command[1]);
             }
             if (command[0] == "add") {
                 string bookName="";

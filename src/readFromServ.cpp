@@ -159,7 +159,8 @@ void readFromServ::run() {
             string first=recieptArray[0];
 
             if (first=="join"){
-                client.addToSubs(recieptArray[1]);
+                string topic = recieptArray[1];
+                client.addToSubs(topic);
                 cout<<"Joined club "+recieptArray[1]<<endl;
             }
             else if (first=="logout"){

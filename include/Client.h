@@ -22,6 +22,7 @@ private:
     vector<string>* subs;
     int receiptNum=0;
     unordered_map<int,string>* messsageByReceipt;
+    unordered_map<string ,string >* topicsAndSubsId;
 
 public:
 
@@ -58,9 +59,10 @@ public:
 
     void clearClient();
     void printMap();
+    void addTotopicsAndSubsId(string,string);
+    string getSubIdByTopic(string);
 
-
-
+    void removeFromTopicsAndSubsId(string);
 
 };
 

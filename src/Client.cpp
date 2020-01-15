@@ -18,10 +18,27 @@ Client::Client(string _name, string _passcode): name(_name), passcode(_passcode)
     booksByGenere = new unordered_map<string, vector<Book *> *>;
     subs = new vector<string>;
     messsageByReceipt = new unordered_map<int, string>;
+    topicsAndSubsId = new unordered_map<string, string>;
 }
 
 void Client::addToSubs(string topic){
     subs->push_back(topic);
+}
+void Client::addTotopicsAndSubsId(string topic,string subId){
+    topicsAndSubsId->insert(make_pair(topic,subId));
+}
+
+void Client::removeFromTopicsAndSubsId(string topic){
+    topicsAndSubsId->erase(topic);
+}
+
+string Client::getSubIdByTopic(string topic){
+    string result;
+    for(pair<string,string> mapPair: *topicsAndSubsId){
+        if(mapPair.first==topic)
+            return mapPair.second;
+    }
+    return nullptr;
 }
 
 void Client::removeFromSubs(string topic){
