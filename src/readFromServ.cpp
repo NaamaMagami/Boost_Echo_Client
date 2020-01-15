@@ -31,11 +31,12 @@ void readFromServ::run() {
         string firstWord=words[0];
 
 
+
         if (firstWord=="MESSAGE"){
             string body = words[5];
             string topic=words[3].substr(12,words[3].size());
             string toPrint=topic+":"+body;
-            cout<<toPrint<<endl;
+            cout<<"got from serv- "+toPrint<<endl;
             string bodyArray[body.size()];
             for (int i=0; i<bodyArray->size();++i){
                 bodyArray[i]="";
@@ -51,7 +52,9 @@ void readFromServ::run() {
                     j = j + 1;
                 }
             }
+
             if (bodyArray[1]=="wish") {
+
                 string bookName = "";
                 for (int k = 4; k < body.size(); ++k) {
                     if (bodyArray[k] != "") {
@@ -92,6 +95,7 @@ void readFromServ::run() {
                             client.addBook(topic,myNewBook);
                         }
                         handler.sendFrameAscii(msgToSend, '\0');
+
                     }
                 }
             }
@@ -129,13 +133,16 @@ void readFromServ::run() {
                 string msgToSend = "SEND\n"
                                    "destination:" +topic+ "\n\n" +
                                    client.getInventory(topic)+
-                                   "\n^@";
+                                   "\n";
+                handler.sendFrameAscii(msgToSend, '\0');
+
             }
         }
 
         else if (firstWord=="RECEIPT"){
+
             string receiptId=words[1].substr(11,words[1].size());
-            cout<<receiptId<<endl;
+            cout<<"got receipt id from server  "+receiptId<<endl;
             string action=client.getReceipt(stoi(receiptId));
             string recieptArray[action.size()];
             int j=0;

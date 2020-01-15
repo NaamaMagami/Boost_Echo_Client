@@ -9,6 +9,8 @@
 #include <KeyboardReader.h>
 #include "StompBookClubClient.h"
 #include "connectionHandler.h"
+#include <unordered_map>
+#include <map>
 
 using namespace std;
 using boost::asio::ip::tcp;
@@ -36,7 +38,7 @@ int main (int argc, char *argv[]) {
             string hostAndPort = command[1];
             string userName = command[2];
             string passcode = command[3];
-            string myHost = boost::asio::ip::host_name();
+//            string myHost = boost::asio::ip::host_name();
 
             string serverHost="";
             string serverPort="";
@@ -52,20 +54,26 @@ int main (int argc, char *argv[]) {
             }
             short port = stoi(serverPort);
 
-            msgToSend = "CONNECT\n"
-                        "accept-version:1.2\n"
-                        "host:"+myHost+"\n"
-                                       "login:" + userName + "\n"
-                                                             "passcode:" + passcode + "\n\n"+'\0';
-cout<<msgToSend<<endl;
+            msgToSend = string("CONNECT")+'\n' +string("accept-version:1.2")+'\n'+string("host:")+serverHost+'\n'
+                                       +string("login:") + userName + '\n'
+                                                             +string("passcode:") + passcode + "\n\n";
+//cout<<msgToSend<<endl;
             ConnectionHandler* handler= new ConnectionHandler(serverHost,port);
             handler->connect();
             handler->sendLine(msgToSend);
-
-
             string command="";
-            if (!(handler->getFrameAscii(command,'\0'))) {
-                cout << "Could not connect to server" << endl;
+//            handler->getLine(command);
+//            vector<string> split;
+//            for (char c:command) {
+//                if (c != ' ') {
+//                    split[i] = split[i] + c;
+//                } else {
+//                    i = i + 1;
+//                }
+//            }
+
+            if (!(handler->getLine(command))) {
+                cout << "Could not connect to server**" << endl;
             }
             else{
                     string words[command.size()];
@@ -90,6 +98,8 @@ cout<<msgToSend<<endl;
                         }
                     }
                     else if (firstWord == "CONNECTED") {
+                        cout<<"user got CONNECTED"<<endl;
+
                         Client *client = new Client(userName, passcode);
                         readFromServ *socketReader = new readFromServ(*handler, *client);
                         KeyboardReader* keyboardReader = new KeyboardReader(*handler,*client);
@@ -100,7 +110,7 @@ cout<<msgToSend<<endl;
 
                         socketThread.join();
                         keyboardThread.join();
-
+                    cout<<"hi"<<endl;
                         wasThereAConnection=false;
                     }
                 }

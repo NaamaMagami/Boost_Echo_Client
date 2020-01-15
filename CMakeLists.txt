@@ -21,4 +21,4 @@ add_executable(Boost_Echo_Client
         include/KeyboardReader.h
         include/readFromServ.h
         include/StompBookClubClient.h
-        )
+        src/_T1.cpp src/_T1.h)

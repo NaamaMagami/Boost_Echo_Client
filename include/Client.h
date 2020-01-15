@@ -8,16 +8,29 @@
 #include "Book.h"
 #include <vector>
 #include <map>
+#include <unordered_map>
 
 using namespace std;
 
 
 class Client {
+private:
+    string name;
+    string passcode;
+    vector<Book*>* wishList;
+    unordered_map<string,vector<Book*>*>* booksByGenere;
+    vector<string>* subs;
+    int receiptNum=0;
+    unordered_map<int,string>* messsageByReceipt;
+
 public:
-    Client(string name, string passcode);
+
 
     Client();
 
+    Client(string _name, string _passcode);
+
+    string getByFirstKey(int first);
     void addMessage(int,string);
     void addBook(string,Book*);
     void removeBook(string,Book*);
@@ -44,15 +57,11 @@ public:
     string getReceipt(int num);
 
     void clearClient();
+    void printMap();
 
-private:
-    string name;
-    string passcode;
-    vector<Book*>* wishList;
-    map<string,vector<Book*>*> booksByGenere;
-    vector<string> subs;
-    int receiptNum;
-    map<int,string>messsageByReceipt;
+
+
+
 };
 
 

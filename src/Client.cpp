@@ -4,38 +4,59 @@
 #include <iostream>
 #include <connectionHandler.h>
 #include "Client.h"
+#include "_T1.h"
 #include <vector>
+#include <type_traits>
+#include <unordered_map>
+
+
+
 using namespace std;
 
-Client::Client(string _name,string _passcode): name(_name), passcode(_passcode){
-    map<string,vector<Book*>> booksByGenere;
-    receiptNum=0;
-    map<int,string>messsageByReceipt;
-    wishList = new vector<Book*>;
-    vector<string> subs;
+Client::Client(string _name, string _passcode): name(_name), passcode(_passcode) {
+    wishList = new vector<Book *>;
+    booksByGenere = new unordered_map<string, vector<Book *> *>;
+    subs = new vector<string>;
+    messsageByReceipt = new unordered_map<int, string>;
 }
 
 void Client::addToSubs(string topic){
-    subs.push_back(topic);
+    subs->push_back(topic);
 }
 
 void Client::removeFromSubs(string topic){
     vector<string>::iterator iter ;
-    for (iter=subs.begin();iter<subs.end();++iter){
+    for (iter=subs->begin();iter<subs->end();++iter){
         if ((*iter)==topic){
-            subs.erase(iter);
+            subs->erase(iter);
         }
     }
 }
+
+string Client::getByFirstKey(int first){
+    for(pair<int,string> mapPair: *messsageByReceipt){
+        if(mapPair.first==first)
+            return mapPair.second;
+    }
+    return nullptr;
+
+}
 string Client::getReceipt(int num){
-    return messsageByReceipt.at(num);
+    string output=getByFirstKey(num);
+    return output;
 }
 const string &Client::getName() const {
     return name;
 }
 
 void Client::addMessage(int receipt, string message) {
-    messsageByReceipt.insert(make_pair(receipt,message));
+    messsageByReceipt->insert(pair<int,string>(receipt,message));
+}
+void Client::printMap(){
+    for(pair<int,string> mapPair:*messsageByReceipt){
+        cout<<to_string(mapPair.first)+" , "+mapPair.second<<endl;
+
+    }
 }
 
 int Client::getReceiptNum(){
@@ -46,17 +67,17 @@ int Client::getReceiptNum(){
 Client::Client() {}
 
 void Client::addBook(string topic, Book * book) {
-    if (booksByGenere.count(topic) == 0){
-        booksByGenere.insert(make_pair(topic,new vector<Book*>));
+    if (booksByGenere->count(topic) == 0){
+        booksByGenere->insert(make_pair(topic,new vector<Book*>));
     }
     if(containedBeforeBook(book->getName()))
         book->setcurrentlyOnInventory(true);
     else {
-        booksByGenere.at(topic)->push_back(book);
+        booksByGenere->at(topic)->push_back(book);
     }
 }
 Book* Client::containesBook(string bookName) {
-    for (map<string, vector<Book*>*>::const_iterator it = booksByGenere.begin(); it != booksByGenere.end(); ++it){
+    for (auto it = booksByGenere->begin(); it != booksByGenere->end(); ++it){
         for (Book* book : *it->second){
             if (book->getName()==bookName & book->getcurrentlyOnInventory()){
                 return book;
@@ -69,14 +90,14 @@ Book* Client::containesBook(string bookName) {
 
 string Client:: getInventory(string topic) {
     string temp="";
-    for  (Book* book : *(booksByGenere.at(topic))){
-        temp=temp+","+book->getName();
+    for  (Book* book : *(booksByGenere->at(topic))){
+        temp=temp+book->getName()+",";
     }
-    return temp;
+    return getName()+":"+temp.substr(0,temp.size()-1);
 }
 
 Book* Client::containedBeforeBook(string bookName) {
-    for (map<string, vector<Book*>*>::const_iterator it = booksByGenere.begin(); it != booksByGenere.end(); ++it){
+    for (auto it =  booksByGenere->begin(); it != booksByGenere->end(); ++it){
         for (Book* book : *it->second){
             if (book->getName()==bookName & !book->getcurrentlyOnInventory()){
                 return book;
@@ -90,8 +111,8 @@ Book* Client::containedBeforeBook(string bookName) {
 
 void Client::removeBook(string genere,Book * book) {
     vector<Book*>::iterator iter;
-    if (booksByGenere.count(genere)>0){
-        for (iter = booksByGenere.at(genere)->begin() ; iter <booksByGenere.at(genere)->end();++iter){
+    if (booksByGenere->count(genere)>0){
+        for (iter = booksByGenere->at(genere)->begin() ; iter <booksByGenere->at(genere)->end();++iter){
             if ((*iter)->getName() == book->getName())
                 (*iter)->setcurrentlyOnInventory(false);
         }
@@ -100,9 +121,9 @@ void Client::removeBook(string genere,Book * book) {
 
 Book* Client::getFromBooksByGenere(string gen,string bookName){
 
-    if(booksByGenere.count(gen)==0)
+    if(booksByGenere->count(gen)==0)
         return nullptr;
-    for(Book* b: *booksByGenere.at(gen)){
+    for(Book* b: *booksByGenere->at(gen)){
         if(b->getName()==bookName)
             return b;
     }
@@ -120,7 +141,7 @@ void Client::addToWishList(Book* book){
 }
 
 void Client::clearClient(){
-    for (map<string, vector<Book*>*>::const_iterator it = booksByGenere.begin(); it != booksByGenere.end(); ++it){
+    for (auto it = booksByGenere->begin(); it != booksByGenere->end(); ++it){
         for (int i=0; i< (it)->second->size();++i){
             delete((*it).second->at(i));
         }
@@ -130,5 +151,7 @@ void Client::clearClient(){
         delete(wishList->at(i));
     }
 }
+
+
 
 
