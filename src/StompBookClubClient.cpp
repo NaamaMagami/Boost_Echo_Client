@@ -118,6 +118,9 @@ int main (int argc, char *argv[]) {
                         delete(keyboardReader);
                         delete(client);
                         wasThereAConnection=false;
+
+                        //PROBLEM AT LOGOUT
+                        terminate();
                     }
                 }
         }

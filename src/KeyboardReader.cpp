@@ -94,6 +94,7 @@ void KeyboardReader::run(){
                 string gen = command[1];
                 string bookName="";
                 for (int i=2;i<command->length();++i) {
+                    if(command[i].compare(" ")!=0)
                     bookName=bookName+" "+command[i];
                 }
                 msgToSend = "SEND\n"

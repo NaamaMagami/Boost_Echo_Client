@@ -63,7 +63,8 @@ void readFromServ::run() {
                     if (bodyArray[k] != "") {
                         bookName = bookName + bodyArray[k];
                     }
-                    cout<<bookName<<endl;
+                }
+
                     Book *myBook = client.containesBook(bookName);
                     if (myBook != nullptr) {
                         cout<<"not null"<<endl;
@@ -74,17 +75,21 @@ void readFromServ::run() {
                         handler.sendFrameAscii(msgToSend, '\0');
                     }
                 }
-            }
-            else if(bodyArray[1]=="has"&&bodyArray[2]!="added"){
+
+            else if(bodyArray[1]=="has" && bodyArray[2]!="added"){
                 string bookName="";
-                for (int k=2;k<body.size();++k){
+                for (int k=4;k<body.size();++k){
                     if(bodyArray[k]!=""){
-                        bookName=bookName+bodyArray[k];
+                        bookName=bookName+bodyArray[k]+" ";
                     }
                 }
+                bookName=bookName.substr(0,bookName.size()-1);
+                cout<<"*"+bookName+"*"<<endl;
                 Book* myBook=client.containesBook(bookName);
                 if (myBook == nullptr) {
+                    cout<<"in null--------"<<endl;
                     if (client.wishListContain(bookName)) {
+                        cout<<"* wish list---------"<<endl;
                         string msgToSend = "SEND\n"
                                            "destination:" + topic + "\n\n" +
                                            " Taking "+myBook->getName()+" from "+bodyArray[0]+

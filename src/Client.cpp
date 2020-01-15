@@ -96,9 +96,12 @@ void Client::addBook(string topic, Book * book) {
     }
 }
 Book* Client::containesBook(string bookName) {
+    string newB=bookName+" ";
+
     for (auto it = booksByGenere->begin(); it != booksByGenere->end(); ++it){
         for (Book* book : *it->second){
-            if (book->getName()==bookName & book->getcurrentlyOnInventory()){
+            if (book->getName().compare(newB)==0){
+                if( book->getcurrentlyOnInventory())
                 return book;
             }
         }
@@ -152,6 +155,8 @@ Book* Client::getFromBooksByGenere(string gen,string bookName){
 
 bool Client::wishListContain(string name) {
     for(Book* b:*wishList){
+        cout<<"wish"+name+"--"<<endl;
+        cout<<"wish"+(b->getName())+"--"<<endl;
         if(b->getName()==name)
             return true;
     }
