@@ -226,9 +226,12 @@ void Client::addToWishList(Book* book){
 
 void Client::clearClient(){
     for (auto it = booksByGenere->begin(); it != booksByGenere->end(); ++it){
-        for (int i=0; i< (it)->second->size();++i){
+        vector<Book*>* vec =it->second;
+       for (int i=0; i< (it)->second->size();++i){
+
             delete((*it).second->at(i));
         }
+
         delete((*it).second);
     }
     for (int i=0;i<wishList->size();++i){
