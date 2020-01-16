@@ -15,6 +15,7 @@ public:
 
     void changeOwner(string);
 
+
     const string &getName() const;
 
     const string &getpreviousOwner() const;

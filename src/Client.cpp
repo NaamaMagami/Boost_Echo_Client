@@ -95,15 +95,45 @@ void Client::addBook(string topic, Book * book) {
         booksByGenere->at(topic)->push_back(book);
     }
 }
+string Client::fixName(string oldName)  {
+    std::string newName=oldName;
+    bool first=false;
+    bool last=false;
+    int count;
+    int i=0;
+    char curr;
+    while(!first& i<newName.length()) {
+        curr=newName.at(i);
+        if (curr!=' ') {
+
+            newName = newName.substr(i, newName.length());
+            first = true;
+        }
+        i=i+1;
+    }
+    i= newName.length()-1;
+    while(i>=0 & !last){
+        curr=newName.at(i);
+        if(curr!=' '){
+            newName=newName.substr(0,i+1);
+            last=true;
+        }
+        i=i-1;
+    }
+    return newName;
+}
+
+
+
 Book* Client::containesBook(string bookName) {
-//    string newB=bookName+" ";
-    cout<<"checking if i have the book:"+bookName+"&"<<endl;
+    cout<<"----in containesBook---"<<endl;
+    cout<<bookName<<endl;
+    cout<<"----in containesBook---"<<endl;
     for (auto it = booksByGenere->begin(); it != booksByGenere->end(); ++it){
         for (Book* book : *it->second){
-            cout<<"$"+book->getName()+"$"<<endl;
             if (book->getName().compare(bookName)==0){
                 if(book->getcurrentlyOnInventory())
-                    return book;
+                return book;
             }
         }
     }
@@ -120,7 +150,9 @@ string Client:: getInventory(string topic) {
             temp=temp+book->getName()+",";
         }
     }
-    return getName()+":"+temp.substr(0,temp.size()-1);
+    string answer=getName()+":"+temp.substr(0,temp.size()-1);
+    cout<<"user inventory:"+answer<<endl;
+    return answer;
 }
 
 Book* Client::containedBeforeBook(string bookName) {
@@ -135,13 +167,16 @@ Book* Client::containedBeforeBook(string bookName) {
 
 }
 
-
+//login 132.72.45.155:7777 left 12
 void Client::removeBook(string genere,Book * book) {
+    cout<<"enterd remove book "+book->getName()<<endl;
     vector<Book*>::iterator iter;
     if (booksByGenere->count(genere)>0){
+        cout<<"גאנר מופיע "<<endl;
         for (iter = booksByGenere->at(genere)->begin() ; iter <booksByGenere->at(genere)->end();++iter){
-            if ((*iter)->getName() == book->getName())
-                (*iter)->setcurrentlyOnInventory(false);
+            if ((*iter)->getName() == book->getName()){
+                cout<<"i setted the book "+book->getName()+"to false"<<endl;
+                (*iter)->setcurrentlyOnInventory(false);}
         }
     }
 }
@@ -155,7 +190,13 @@ Book* Client::getFromBooksByGenere(string gen,string bookName){
             return b;
     }
 }
-
+void Client::printInventory(){
+    for (auto it = booksByGenere->begin(); it != booksByGenere->end(); ++it){
+        for (int i=0; i< (it)->second->size();++i){
+            cout<<"["+(*it).second->at(i)->getName()+"]"<<endl;
+        }
+    }
+}
 bool Client::wishListContain(string name) {
     for(Book* b:*wishList){
         if(b->getName()==name)

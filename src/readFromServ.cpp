@@ -58,17 +58,19 @@ void readFromServ::run() {
             for(int i=0; i<bodyArray->size();++i){
                 cout<<"["+bodyArray[i]+"]"<<endl;
             }
-            cout<<"bodyArray[0]:"+bodyArray[0]<<endl;
 
             if (bodyArray[1]=="wish") {
-
                 string bookName = "";
                 for (int k = 4; k < body.size(); ++k) {
                     if (bodyArray[k] != "") {
-                        bookName = bookName + bodyArray[k];
+                        bookName = bookName +" "+ bodyArray[k];
                     }
                 }
-
+                cout<<"----------"<<endl;
+                cout<<bookName<<endl;
+                bookName=client.fixName(bookName);
+                cout<<bookName<<endl;
+                cout<<"----------"<<endl;
                     Book *myBook = client.containesBook(bookName);
                     if (myBook != nullptr) {
                         cout<<"not null"<<endl;
@@ -87,10 +89,12 @@ void readFromServ::run() {
                         bookName=bookName+bodyArray[k]+" ";
                     }
                 }
-                bookName=bookName.substr(0,bookName.size()-1);
-                cout<<"*"+bookName+"*"<<endl;
+                bookName=client.fixName(bookName);
+                //bookName=bookName.substr(0,bookName.size()-1);
+               // cout<<"book name- "+bookName+""<<endl;
                 Book* myBook=client.containesBook(bookName);
                 if (myBook == nullptr) {
+
                     if (client.wishListContain(bookName)) {
                         string msgToSend = "SEND\n"
                                            "destination:" + topic + "\n\n" +
@@ -119,8 +123,8 @@ void readFromServ::run() {
                     }
                 }
                 string fromWhomToTake = bodyArray[from+1];
-                cout<< "&"+fromWhomToTake+"&"<<endl;
-                cout<< "my name="+client.getName()+"&"<<endl;
+                fromWhomToTake=client.fixName(fromWhomToTake);
+
                 if (fromWhomToTake == client.getName()) {
                     string bookName = "";
                     int k = 1;
@@ -128,8 +132,10 @@ void readFromServ::run() {
                         bookName = bookName + bodyArray[k];
                         ++k;
                     }
-                    cout<< "book name:"+bookName+"&"<<endl;
+                    bookName=client.fixName(bookName);
+
                     if (client.containesBook(bookName) != nullptr) {
+                        cout<<"wants to remov "+bookName+"from"+client.getName()<<endl;
                         client.removeBook(topic, client.containesBook(bookName));
                     } else {
                         cout << "ERROR: CLIENT GAVE A BOOK BUT DOES NOT OWN IT!";
@@ -143,6 +149,7 @@ void readFromServ::run() {
                     bookToReturn=bookToReturn+bodyArray[k];
                     ++k;
                 }
+                bookToReturn=client.fixName(bookToReturn);
                 int userNamePosition;
                 for (int i=2;i<bodyArray->size();++i){
                     if (bodyArray[i]=="to") {
@@ -168,6 +175,8 @@ void readFromServ::run() {
                                    "destination:" +topic+ "\n\n" +
                                    client.getInventory(topic)+
                                    "\n";
+                cout<<client.getName()+":"<<endl;
+                client.printInventory();
                 handler.sendLine(msgToSend);
 
             }

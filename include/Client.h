@@ -36,6 +36,7 @@ public:
     void addBook(string,Book*);
     void removeBook(string,Book*);
     int getReceiptNum();
+    string fixName(string);
 
     const string &getName() const;
 
@@ -63,7 +64,7 @@ public:
     string getSubIdByTopic(string);
 
     void removeFromTopicsAndSubsId(string);
-
+    void printInventory();
 };
 
 

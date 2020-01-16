@@ -88,7 +88,7 @@ void KeyboardReader::run(){
                         break;
                     }
                 }
-                bookName=bookName.substr(0,k-1);
+                bookName=client.fixName(bookName);
 
                 cout<<"adding the book "+bookName<<endl;
                 msgToSend = "SEND\n"
@@ -105,19 +105,19 @@ void KeyboardReader::run(){
             if (command[0] == "borrow") {
                 string gen = command[1];
                 string bookName="";
+
                 for (int i=2;i<command->length();++i) {
                     if(command[i]!=" ")
-                        bookName=bookName+command[i];
+                        bookName=bookName+" "+command[i];
                 }
-//                int t=2;
-//                while (bookName.)
-//                bookName=bookName.substr(1,t);
+               bookName=client.fixName(bookName);
+
                 msgToSend = "SEND\n"
                             "destination:" + gen + "\n"
                                                    "\n" +
-                            client.getName() + " wish to borrow " + bookName + "\n"
+                            client.getName() + " wish to borrow "+bookName + "\n"
                                                                               "\n";
-                cout<< "Add to wish book:*"+bookName+"*"<<endl;
+              ;
                 Book *bookToAdd = new Book(bookName, client.getName(), command[1]);
                 client.addToWishList(bookToAdd);
                 handler.sendLine(msgToSend);
@@ -142,7 +142,7 @@ void KeyboardReader::run(){
                 cout<<"returning book:"+bookName<<endl;
                 cout<<"from gen:"+gen<<endl;
                 Book *bookToReturn = client.getFromBooksByGenere(gen, bookName);
-                cout<< "do i have the book?"+(bookToReturn== nullptr)<<endl;
+
                 msgToSend = "SEND\n"
                             "destination:" + gen + "\n"
                                                    "\n" +
@@ -170,8 +170,7 @@ void KeyboardReader::run(){
             }
 
 
-//login 132.72.44.16:7777 nett 123
-
+//login 132.72.45.155:7777 left 12
 //        if (!connectionHandler.sendLine(line)) {
 //            std::cout << "Disconnected. Exiting...\n" << std::endl;
 //            break;

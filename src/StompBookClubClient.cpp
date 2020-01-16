@@ -19,7 +19,7 @@ int main (int argc, char *argv[]) {
     bool wasThereAConnection = false;
 
     while (!wasThereAConnection) {
-        cout<<"entered while"<<endl;
+
         const short bufsize = 1024;
         char buf[bufsize];
         cin.getline(buf, bufsize);
@@ -63,6 +63,7 @@ int main (int argc, char *argv[]) {
             handler->connect();
             handler->sendLine(msgToSend);
             string command="";
+
 //            handler->getLine(command);
 //            vector<string> split;
 //            for (char c:command) {

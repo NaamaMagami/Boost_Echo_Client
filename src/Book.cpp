@@ -2,11 +2,16 @@
 // Created by magami@wincs.cs.bgu.ac.il on 12/01/2020.
 //
 
+#include <iostream>
 #include "Book.h"
+using namespace std;
+
 Book::Book(string _name,string _previousOwner,string gen):name(_name),previousOwner(_previousOwner),genere(gen),currentlyOnInventory(true){}
 
 void Book::changeOwner(string newOwner){
-};
+}
+
+
 
 const string &Book::getName() const {
     return name;
