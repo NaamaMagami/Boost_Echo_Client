@@ -65,6 +65,8 @@ public:
 
     void removeFromTopicsAndSubsId(string);
     void printInventory();
+
+    bool removeFromWishList(string name);
 };
 
 

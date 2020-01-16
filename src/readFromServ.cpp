@@ -72,7 +72,8 @@ void readFromServ::run() {
                 cout<<bookName<<endl;
                 cout<<"----------"<<endl;
                     Book *myBook = client.containesBook(bookName);
-                    if (myBook != nullptr) {
+
+                if (myBook != nullptr) {
                         cout<<"not null"<<endl;
                         string msgToSend = "SEND\n"
                                            "destination:" + myBook->getGenere() + "\n\n" +
@@ -102,13 +103,19 @@ void readFromServ::run() {
                                            "\n";
 
                         Book* myOldBook=client.containedBeforeBook(bookName);
-                        if(myOldBook!= nullptr){
+                        client.removeFromWishList(bookName);
+                        if(myOldBook != nullptr){
+                            cout<<"im in the if"<<endl;
                             myOldBook->setcurrentlyOnInventory(true);
                             myOldBook->setpreviousOwner(bodyArray[0]);
+
                         }
                         else {
+                            cout<<"im in the else"<<endl;
                             Book* myNewBook=new Book(bookName,bodyArray[0],topic);
+                            cout<<"im after book"<<endl;
                             client.addBook(topic,myNewBook);
+                            cout<<"im after add book"<<endl;
                         }
                         handler.sendLine(msgToSend);
 
@@ -124,12 +131,11 @@ void readFromServ::run() {
                 }
                 string fromWhomToTake = bodyArray[from+1];
                 fromWhomToTake=client.fixName(fromWhomToTake);
-
                 if (fromWhomToTake == client.getName()) {
                     string bookName = "";
                     int k = 1;
                     while (bodyArray[k] != "from") {
-                        bookName = bookName + bodyArray[k];
+                        bookName = bookName + bodyArray[k]+" ";
                         ++k;
                     }
                     bookName=client.fixName(bookName);
@@ -146,7 +152,7 @@ void readFromServ::run() {
                 int k=1;
                 string bookToReturn ="";
                 while (bodyArray[k]!="to"){
-                    bookToReturn=bookToReturn+bodyArray[k];
+                    bookToReturn=bookToReturn+bodyArray[k]+" ";
                     ++k;
                 }
                 bookToReturn=client.fixName(bookToReturn);

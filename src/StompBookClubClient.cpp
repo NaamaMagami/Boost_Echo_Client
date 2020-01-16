@@ -111,6 +111,7 @@ int main (int argc, char *argv[]) {
 
                         client->clearClient();
                         handler->~ConnectionHandler();
+
                         delete(socketReader);
                         delete(keyboardReader);
                         delete(client);

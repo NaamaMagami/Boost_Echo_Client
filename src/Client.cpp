@@ -204,15 +204,34 @@ bool Client::wishListContain(string name) {
     }
     return false;
 }
+
+bool Client::removeFromWishList(string name) {
+    name=fixName(name);
+    bool isF=false;
+    cout<<"try to remove from wishList "+name<<endl;
+    for (auto it = wishList->begin();!isF && it != wishList->end(); ++it){
+        if((*it)->getName()==name) {
+            isF=true;
+            cout<<"--------in the if man------"<<endl;
+            wishList->erase(it);
+            cout<<"--------erase------"<<endl;
+        }
+    }
+
+}
+
 void Client::addToWishList(Book* book){
     wishList->push_back(book);
 }
 
 void Client::clearClient(){
     for (auto it = booksByGenere->begin(); it != booksByGenere->end(); ++it){
-        for (int i=0; i< (it)->second->size();++i){
+        vector<Book*>* vec =it->second;
+       for (int i=0; i< (it)->second->size();++i){
+
             delete((*it).second->at(i));
         }
+
         delete((*it).second);
     }
     for (int i=0;i<wishList->size();++i){
