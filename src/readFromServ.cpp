@@ -124,12 +124,11 @@ void readFromServ::run() {
                 }
                 string fromWhomToTake = bodyArray[from+1];
                 fromWhomToTake=client.fixName(fromWhomToTake);
-
                 if (fromWhomToTake == client.getName()) {
                     string bookName = "";
                     int k = 1;
                     while (bodyArray[k] != "from") {
-                        bookName = bookName + bodyArray[k];
+                        bookName = bookName + bodyArray[k]+" ";
                         ++k;
                     }
                     bookName=client.fixName(bookName);
@@ -146,7 +145,7 @@ void readFromServ::run() {
                 int k=1;
                 string bookToReturn ="";
                 while (bodyArray[k]!="to"){
-                    bookToReturn=bookToReturn+bodyArray[k];
+                    bookToReturn=bookToReturn+bodyArray[k]+" ";
                     ++k;
                 }
                 bookToReturn=client.fixName(bookToReturn);

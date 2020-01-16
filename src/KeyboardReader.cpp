@@ -127,7 +127,7 @@ void KeyboardReader::run(){
                 string bookName="";
                 for (int i=2;i<command->length();++i) {
                     if(command[i]!=" ")
-                        bookName=bookName+command[i];
+                        bookName=bookName+command[i]+" ";
                 }
 
                 int j=0;
@@ -138,7 +138,7 @@ void KeyboardReader::run(){
                         break;
                     }
                 }
-                bookName=bookName.substr(0,k);
+                bookName=client.fixName(bookName);
                 cout<<"returning book:"+bookName<<endl;
                 cout<<"from gen:"+gen<<endl;
                 Book *bookToReturn = client.getFromBooksByGenere(gen, bookName);
