@@ -11,7 +11,7 @@ class StompBookClubClient {
     int main();
 
 private:
-    bool wasThereAConnection;
+
 };
 
 

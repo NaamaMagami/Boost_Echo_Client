@@ -10,17 +10,19 @@
 #include <array>
 using namespace std;
 
-readFromServ::readFromServ(ConnectionHandler& _handler1,Client& _client):handler(_handler1),client(_client){}
+readFromServ::readFromServ(ConnectionHandler& _handler1,Client& _client):handler(_handler1),client(_client){
+    connected=true;
+}
 
 //readFromServ::~readFromServ() {
 //    close();
 //}
 
 void readFromServ::run() {
-    bool connected=true;
+
     while (connected) {
         string command="";
-        handler.getFrameAscii(command,'\0');
+        handler.getLine(command);
 
         string words[command.size()];
         int i=0;
@@ -32,8 +34,6 @@ void readFromServ::run() {
             }
         }
         string firstWord=words[0];
-
-
 
         if (firstWord=="MESSAGE"){
             string body = words[5];
@@ -199,8 +199,9 @@ void readFromServ::run() {
                     j = j + 1;
                 }
             }
+            // of niv login 132.72.45.154:6666 naama 34
             string first=recieptArray[0];
-
+            cout<<first<<endl;
             if (first=="join"){
                 string topic = recieptArray[1];
                 client.addToSubs(topic);
@@ -208,8 +209,6 @@ void readFromServ::run() {
             }
             else if (first=="logout"){
                 connected= false;
-                client.clearClient();
-                handler.close();
                 cout<<"**** inside logout"+receiptId<<endl;
             }
             else if ("exit"){
@@ -220,4 +219,5 @@ void readFromServ::run() {
         }
 
     }
+    cout<<"finished read"<<endl;
 }

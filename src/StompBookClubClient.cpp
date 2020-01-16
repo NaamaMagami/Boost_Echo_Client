@@ -16,13 +16,17 @@ using namespace std;
 using boost::asio::ip::tcp;
 
 int main (int argc, char *argv[]) {
-    bool wasThereAConnection = false;
+    bool shineOnYouCrazyDiamond = true;
 
-    while (!wasThereAConnection) {
+    while (shineOnYouCrazyDiamond) {
 
         const short bufsize = 1024;
         char buf[bufsize];
-        cin.getline(buf, bufsize);
+        try {
+            cin.getline(buf, bufsize);
+        }catch(exception){
+            cout<<"catch main<<endl;";
+        }
         string line(buf);
         int len = line.length();
         string command[len];
@@ -39,7 +43,6 @@ int main (int argc, char *argv[]) {
             string hostAndPort = command[1];
             string userName = command[2];
             string passcode = command[3];
-//            string myHost = boost::asio::ip::host_name();
 
             string serverHost="";
             string serverPort="";
@@ -63,16 +66,6 @@ int main (int argc, char *argv[]) {
             handler->connect();
             handler->sendLine(msgToSend);
             string command="";
-
-//            handler->getLine(command);
-//            vector<string> split;
-//            for (char c:command) {
-//                if (c != ' ') {
-//                    split[i] = split[i] + c;
-//                } else {
-//                    i = i + 1;
-//                }
-//            }
 
             if (!(handler->getLine(command))) {
                 cout << "Could not connect to server**" << endl;
@@ -110,19 +103,19 @@ int main (int argc, char *argv[]) {
 
                         thread socketThread(&readFromServ::run, socketReader);
                         thread keyboardThread(&KeyboardReader::run, keyboardReader);
-                        wasThereAConnection = true;
 
-                        socketThread.join();
                         keyboardThread.join();
+                        cout<<"keyboard finish"<<endl;
+                        socketThread.join();
+                        cout<<"socked finish"<<endl;
 
+                        client->clearClient();
                         handler->~ConnectionHandler();
                         delete(socketReader);
                         delete(keyboardReader);
                         delete(client);
-                        wasThereAConnection=false;
 
-                        //PROBLEM AT LOGOUT
-                        terminate();
+                        shineOnYouCrazyDiamond=false;
                     }
                 }
         }

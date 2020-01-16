@@ -21,6 +21,8 @@ private:
     ConnectionHandler& handler;
     int subId;
     Client client;
+    bool loggedIn;
+
 };
 
 

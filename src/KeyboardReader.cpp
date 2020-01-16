@@ -11,24 +11,24 @@ using namespace std;
 using boost::asio::ip::tcp;
 
 KeyboardReader::KeyboardReader(ConnectionHandler& _handler, Client _client): handler(_handler),client(_client),subId(0){
+    loggedIn=true;
 }
 
 void KeyboardReader::run(){
-    bool loggedIn=true;
+
     while (loggedIn) {
-        if(handler.getIsClosed()){
-            loggedIn=false;
-        }
-        else{
             const short bufsize = 1024;
             char buf[bufsize];
-            cin.getline(buf, bufsize);
+            try {
+                cin.getline(buf, bufsize);
+            }catch(exception){
+                cout<<"logged out"<<endl;
+            }
             string line(buf);
             int len = line.length();
             string command[len];
             int i = 0;
             string msgToSend;
-            //extracting the input line to array called "command"-->>>could be done with BOOST
             for (char c:line) {
                 if (c != ' ') {
                     command[i] = command[i] + c;
@@ -36,16 +36,7 @@ void KeyboardReader::run(){
                     i = i + 1;
                 }
             }
-//            if (command[0] == "login") {
-//                msgToSend = "CONNECT\n"
-//                            "accept-version:1.2\n"
-//                            "host:stomp.cs.bgu.ac.il\n"
-//                            "login:" + command[2] + "\n"
-//                                                    "passcode:" + command[3] + "\n"
-//                                                                               "\n^@";
-//                handler.sendLine(msgToSend);
-//            }
-            //add to the map "join genere"
+
             if (command[0] == "join") {
                 string stringSubId = to_string(subId);
                 int thisR = client.getReceiptNum();
@@ -57,7 +48,6 @@ void KeyboardReader::run(){
                 subId = subId + 1;
                 client.addMessage(thisR, "join " + command[1]);
                 handler.sendLine(msgToSend);
-
             }
             //find out what to do with the receipt number
             if (command[0] == "exit") {
@@ -166,41 +156,13 @@ void KeyboardReader::run(){
                             "receipt:" + to_string(thisR) + "\n\n";
                 client.addMessage(thisR, "logout");
                 handler.sendLine(msgToSend);
-//                break;
+                loggedIn=false;
+                break;
             }
-
-
 //login 132.72.45.155:7777 left 12
-//        if (!connectionHandler.sendLine(line)) {
-//            std::cout << "Disconnected. Exiting...\n" << std::endl;
-//            break;
-//        }
-//        // connectionHandler.sendLine(line) appends '\n' to the message. Therefor we send len+1 bytes.
-//        std::cout << "Sent " << len+1 << " bytes to server" << std::endl;
-//
-//
-//        // We can use one of three options to read data from the server:
-//        // 1. Read a fixed number of characters
-//        // 2. Read a line (up to the newline character using the getline() buffered reader
-//        // 3. Read up to the null character
-//        std::string answer;
-//        // Get back an answer: by using the expected number of bytes (len bytes + newline delimiter)
-//        // We could also use: connectionHandler.getline(answer) and then get the answer without the newline char at the end
-//        if (!connectionHandler.getLine(answer)) {
-//            std::cout << "Disconnected. Exiting...\n" << std::endl;
-//            break;
-//        }
-//
-//        len=answer.length();
-//        // A C string must end with a 0 char delimiter.  When we filled the answer buffer from the socket
-//        // we filled up to the \n char - we must make sure now that a 0 char is also present. So we truncate last character.
-//        answer.resize(len-1);
-//        std::cout << "Reply: " << answer << " " << len << " bytes " << std::endl << std::endl;
-//        if (answer == "bye") {
-//            std::cout << "Exiting...\n" << std::endl;
-//            break;
-//        }
+
         }
-    }}
+    cout<< "finished while"<<endl;
+    }
 
 
