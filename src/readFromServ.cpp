@@ -39,7 +39,7 @@ void readFromServ::run() {
             string body = words[5];
             string topic=words[3].substr(12,words[3].size());
             string toPrint=topic+":"+body;
-            cout<<"got from serv- "+toPrint<<endl;
+            cout<<"got from serv:"+toPrint<<endl;
             string bodyArray[body.size()];
             for (int i=0; i<bodyArray->size();++i){
                 bodyArray[i]="";
@@ -55,6 +55,10 @@ void readFromServ::run() {
                     j = j + 1;
                 }
             }
+            for(int i=0; i<bodyArray->size();++i){
+                cout<<"["+bodyArray[i]+"]"<<endl;
+            }
+            cout<<"bodyArray[0]:"+bodyArray[0]<<endl;
 
             if (bodyArray[1]=="wish") {
 
@@ -71,7 +75,7 @@ void readFromServ::run() {
                         string msgToSend = "SEND\n"
                                            "destination:" + myBook->getGenere() + "\n\n" +
                                            client.getName() + " has the book " + myBook->getName() +
-                                           "\n^@";
+                                           "\n";
                         handler.sendFrameAscii(msgToSend, '\0');
                     }
                 }
@@ -87,13 +91,12 @@ void readFromServ::run() {
                 cout<<"*"+bookName+"*"<<endl;
                 Book* myBook=client.containesBook(bookName);
                 if (myBook == nullptr) {
-                    cout<<"in null--------"<<endl;
                     if (client.wishListContain(bookName)) {
-                        cout<<"* wish list---------"<<endl;
                         string msgToSend = "SEND\n"
                                            "destination:" + topic + "\n\n" +
-                                           " Taking "+myBook->getName()+" from "+bodyArray[0]+
-                                           "\n^@";
+                                           "Taking "+bookName+" from "+bodyArray[0]+
+                                           "\n";
+
                         Book* myOldBook=client.containedBeforeBook(bookName);
                         if(myOldBook!= nullptr){
                             myOldBook->setcurrentlyOnInventory(true);
@@ -103,23 +106,34 @@ void readFromServ::run() {
                             Book* myNewBook=new Book(bookName,bodyArray[0],topic);
                             client.addBook(topic,myNewBook);
                         }
-                        handler.sendFrameAscii(msgToSend, '\0');
+                        handler.sendLine(msgToSend);
 
                     }
                 }
             }
-            else if(bodyArray[0]=="Taking" & bodyArray[bodyArray->size()-1]==client.getName()){
-                string bookName="";
-                int k=1;
-                while (bodyArray[k]!="from"){
-                    bookName=bookName+bodyArray[k];
-                    ++k;
+            else if(bodyArray[0]=="Taking") {
+                int from=2;
+                for (i=0;i<bodyArray->size();++i){
+                    if (bodyArray[i]=="from"){
+                        from =i;
+                    }
                 }
-                if (client.containesBook(bookName)!= nullptr) {
-                    client.removeBook(topic, client.containesBook(bookName));
-                }
-                else{
-                    cout<<"ERROR: CLIENT GAVE A BOOK BUT DOES NOT OWN IT!";
+                string fromWhomToTake = bodyArray[from+1];
+                cout<< "&"+fromWhomToTake+"&"<<endl;
+                cout<< "my name="+client.getName()+"&"<<endl;
+                if (fromWhomToTake == client.getName()) {
+                    string bookName = "";
+                    int k = 1;
+                    while (bodyArray[k] != "from") {
+                        bookName = bookName + bodyArray[k];
+                        ++k;
+                    }
+                    cout<< "book name:"+bookName+"&"<<endl;
+                    if (client.containesBook(bookName) != nullptr) {
+                        client.removeBook(topic, client.containesBook(bookName));
+                    } else {
+                        cout << "ERROR: CLIENT GAVE A BOOK BUT DOES NOT OWN IT!";
+                    }
                 }
             }
             else if(bodyArray[0]=="Returning"){
@@ -129,9 +143,20 @@ void readFromServ::run() {
                     bookToReturn=bookToReturn+bodyArray[k];
                     ++k;
                 }
-                if (bodyArray[bodyArray->size()]==client.getName()){
+                int userNamePosition;
+                for (int i=2;i<bodyArray->size();++i){
+                    if (bodyArray[i]=="to") {
+                        userNamePosition = i + 1;
+                        break;
+                    }
+                }
+                cout<<"book to return name:"+bookToReturn<<endl;
+                cout<<"user to return to:"+bodyArray[userNamePosition]<<endl;
+                cout<<"my name:"+client.getName()<<endl;
+                if (bodyArray[userNamePosition]==client.getName()){
+                    cout<<client.getName()+" entered here"<<endl;
                     if (client.containedBeforeBook(bookToReturn)!= nullptr) {
-                        client.addBook(topic, client.containesBook(bookToReturn));
+                        client.addBook(topic, client.containedBeforeBook(bookToReturn));
                     }
                     else{
                         cout<<"ERROR: CLIENT GAVE A BOOK BUT DOES NOT HAVE IT ON CONAIED BEFORE!";
@@ -143,7 +168,7 @@ void readFromServ::run() {
                                    "destination:" +topic+ "\n\n" +
                                    client.getInventory(topic)+
                                    "\n";
-                handler.sendFrameAscii(msgToSend, '\0');
+                handler.sendLine(msgToSend);
 
             }
         }
@@ -177,7 +202,6 @@ void readFromServ::run() {
                 client.clearClient();
                 handler.close();
                 cout<<"**** inside logout"+receiptId<<endl;
-
             }
             else if ("exit"){
                 client.removeFromSubs(recieptArray[1]);

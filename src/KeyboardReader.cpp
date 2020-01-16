@@ -80,12 +80,24 @@ void KeyboardReader::run(){
                     bookName=bookName+string(command[i])+" ";
                     i=i+1;
                 }
+                int j=0;
+                int k=bookName.length();
+                for (int i=0; i<bookName.length();++i){
+                    if (bookName.at(j)==' '& bookName.at(j+1)==' '){
+                        k=j;
+                        break;
+                    }
+                }
+                bookName=bookName.substr(0,k-1);
+
                 cout<<"adding the book "+bookName<<endl;
                 msgToSend = "SEND\n"
                             "destination:" + command[1] + "\n"
                                                           "\n"+
                             client.getName() + " has added the book " + bookName + "\n"
                                                                                      "\n";
+
+
                 Book *bookToAdd = new Book(bookName, client.getName(), command[1]);
                 client.addBook(command[1], bookToAdd);
                 handler.sendLine(msgToSend);
@@ -94,14 +106,18 @@ void KeyboardReader::run(){
                 string gen = command[1];
                 string bookName="";
                 for (int i=2;i<command->length();++i) {
-                    if(command[i].compare(" ")!=0)
-                    bookName=bookName+" "+command[i];
+                    if(command[i]!=" ")
+                        bookName=bookName+command[i];
                 }
+//                int t=2;
+//                while (bookName.)
+//                bookName=bookName.substr(1,t);
                 msgToSend = "SEND\n"
                             "destination:" + gen + "\n"
                                                    "\n" +
-                            client.getName() + " wish to borrow" + bookName + "\n"
-                                                                               "\n";
+                            client.getName() + " wish to borrow " + bookName + "\n"
+                                                                              "\n";
+                cout<< "Add to wish book:*"+bookName+"*"<<endl;
                 Book *bookToAdd = new Book(bookName, client.getName(), command[1]);
                 client.addToWishList(bookToAdd);
                 handler.sendLine(msgToSend);
@@ -110,13 +126,27 @@ void KeyboardReader::run(){
                 string gen = command[1];
                 string bookName="";
                 for (int i=2;i<command->length();++i) {
-                    bookName=bookName+" "+command[i];
+                    if(command[i]!=" ")
+                        bookName=bookName+command[i];
                 }
+
+                int j=0;
+                int k=bookName.length();
+                for (int i=0; i<bookName.length();++i){
+                    if (bookName.at(j)==' '& bookName.at(j+1)==' '){
+                        k=j;
+                        break;
+                    }
+                }
+                bookName=bookName.substr(0,k);
+                cout<<"returning book:"+bookName<<endl;
+                cout<<"from gen:"+gen<<endl;
                 Book *bookToReturn = client.getFromBooksByGenere(gen, bookName);
+                cout<< "do i have the book?"+(bookToReturn== nullptr)<<endl;
                 msgToSend = "SEND\n"
                             "destination:" + gen + "\n"
                                                    "\n" +
-                            " Returning " + bookName + " to " + bookToReturn->getpreviousOwner() + "\n"
+                            "Returning " + bookName + " to " + bookToReturn->getpreviousOwner() + "\n"
                                                                                                    "\n";
                 handler.sendLine(msgToSend);
                 client.removeBook(gen, bookToReturn);
