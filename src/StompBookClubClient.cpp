@@ -116,6 +116,7 @@ int main (int argc, char *argv[]) {
                         keyboardThread.join();
 
                         handler->~ConnectionHandler();
+
                         delete(socketReader);
                         delete(keyboardReader);
                         delete(client);
