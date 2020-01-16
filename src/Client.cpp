@@ -204,6 +204,22 @@ bool Client::wishListContain(string name) {
     }
     return false;
 }
+
+bool Client::removeFromWishList(string name) {
+    name=fixName(name);
+    bool isF=false;
+    cout<<"try to remove from wishList "+name<<endl;
+    for (auto it = wishList->begin();!isF && it != wishList->end(); ++it){
+        if((*it)->getName()==name) {
+            isF=true;
+            cout<<"--------in the if man------"<<endl;
+            wishList->erase(it);
+            cout<<"--------erase------"<<endl;
+        }
+    }
+
+}
+
 void Client::addToWishList(Book* book){
     wishList->push_back(book);
 }
