@@ -17,7 +17,7 @@ using boost::asio::ip::tcp;
 
 int main (int argc, char *argv[]) {
     bool shineOnYouCrazyDiamond = true;
-
+    cout<<"entered main"<<endl;
     while (shineOnYouCrazyDiamond) {
 
         const short bufsize = 1024;
@@ -110,15 +110,17 @@ int main (int argc, char *argv[]) {
                         cout<<"socked finish"<<endl;
 
                         client->clearClient();
-                        handler->~ConnectionHandler();
 
+                        handler->close();
                         delete(socketReader);
                         delete(keyboardReader);
                         delete(client);
 
                         shineOnYouCrazyDiamond=false;
+                        break;
                     }
                 }
+
         }
     }
 

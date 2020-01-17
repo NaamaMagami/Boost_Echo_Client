@@ -16,7 +16,7 @@ public:
 private:
     ConnectionHandler &handler ;
     Client& client;
-    bool connected;
+//    bool connected;
 };
 
 

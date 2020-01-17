@@ -157,7 +157,6 @@ void KeyboardReader::run(){
                 client.addMessage(thisR, "logout");
                 handler.sendLine(msgToSend);
                 loggedIn=false;
-                break;
             }
 //login 132.72.45.155:7777 left 12
 

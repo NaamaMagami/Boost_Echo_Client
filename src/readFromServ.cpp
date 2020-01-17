@@ -11,7 +11,7 @@
 using namespace std;
 
 readFromServ::readFromServ(ConnectionHandler& _handler1,Client& _client):handler(_handler1),client(_client){
-    connected=true;
+//    connected=true;
 }
 
 //readFromServ::~readFromServ() {
@@ -19,7 +19,7 @@ readFromServ::readFromServ(ConnectionHandler& _handler1,Client& _client):handler
 //}
 
 void readFromServ::run() {
-
+    bool connected=true;
     while (connected) {
         string command="";
         handler.getLine(command);
@@ -216,6 +216,7 @@ void readFromServ::run() {
             else if (first=="logout"){
                 connected= false;
                 cout<<"**** inside logout"+receiptId<<endl;
+//                handler.close();
             }
             else if ("exit"){
                 client.removeFromSubs(recieptArray[1]);
