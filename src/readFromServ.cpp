@@ -95,7 +95,7 @@ void readFromServ::run() {
                // cout<<"book name- "+bookName+""<<endl;
                 Book* myBook=client.containesBook(bookName);
                 if (myBook == nullptr) {
-
+                    bool  wishListContain=client.wishListContain(bookName);
                     if (client.wishListContain(bookName)) {
                         string msgToSend = "SEND\n"
                                            "destination:" + topic + "\n\n" +

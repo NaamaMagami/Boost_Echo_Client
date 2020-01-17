@@ -9,6 +9,7 @@
 #include <vector>
 #include <map>
 #include <unordered_map>
+#include <mutex>
 
 using namespace std;
 
@@ -24,13 +25,13 @@ private:
     unordered_map<int,string>* messsageByReceipt;
     unordered_map<string ,string >* topicsAndSubsId;
 
+
 public:
 
 
     Client();
 
     Client(string _name, string _passcode);
-
     string getByFirstKey(int first);
     void addMessage(int,string);
     void addBook(string,Book*);
@@ -66,7 +67,8 @@ public:
     void removeFromTopicsAndSubsId(string);
     void printInventory();
 
-    bool removeFromWishList(string name);
+    void removeFromWishList(string name);
+
 };
 
 

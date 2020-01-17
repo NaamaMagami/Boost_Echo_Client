@@ -19,11 +19,9 @@ int main (int argc, char *argv[]) {
     bool shineOnYouCrazyDiamond = true;
     cout<<"entered main"<<endl;
     while (shineOnYouCrazyDiamond) {
-
         const short bufsize = 1024;
         char buf[bufsize];
         try {
-            cout<<"WTFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFf"<<endl;
             cin.getline(buf, bufsize);
         }catch(exception){
             cout<<"catch main"<<endl;

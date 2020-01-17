@@ -6,6 +6,7 @@
 #define BOOST_ECHO_CLIENT_BOOK_H
 
 #include <string>
+#include <mutex>
 
 using namespace std;
 

@@ -5,10 +5,7 @@
 #include <connectionHandler.h>
 #include "Client.h"
 #include <vector>
-#include <type_traits>
 #include <unordered_map>
-
-
 
 using namespace std;
 
@@ -166,7 +163,7 @@ Book* Client::containedBeforeBook(string bookName) {
 
 }
 
-//login 132.72.45.170:7777 neta 123
+//login 132.72.45.28:7777 neta 123
 void Client::removeBook(string genere,Book * book) {
     cout<<"enterd remove book "+book->getName()<<endl;
     vector<Book*>::iterator iter;
@@ -197,17 +194,22 @@ void Client::printInventory(){
     }
 }
 bool Client::wishListContain(string name) {
+    bool response;
+
     for(Book* b:*wishList){
-        if(b->getName()==name)
-            return true;
+    if(b->getName()==name)
+        response= true;
     }
-    return false;
+
+    response= false;
+    return response;
 }
 
-bool Client::removeFromWishList(string name) {
+void Client::removeFromWishList(string name) {
     name=fixName(name);
     bool isF=false;
     cout<<"try to remove from wishList "+name<<endl;
+
     for (auto it = wishList->begin();!isF && it != wishList->end(); ++it){
         if((*it)->getName()==name) {
             isF=true;
@@ -217,10 +219,12 @@ bool Client::removeFromWishList(string name) {
         }
     }
 
+
 }
 
 void Client::addToWishList(Book* book){
     wishList->push_back(book);
+
 }
 
 void Client::clearClient(){
