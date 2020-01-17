@@ -12,16 +12,20 @@ using namespace std;
 
 class Book {
 public:
-    Book(string,string,string);
+    Book() noexcept ;
+    Book(const Book &);
 
-    void changeOwner(string);
+    Book(Book &&) noexcept;
 
+    Book(string, string, string);
+
+    Book &operator=(const Book &) = default;
+
+    Book &operator=(Book &&) = default;
 
     const string &getName() const;
 
     const string &getpreviousOwner() const;
-
-    const string &getCurrentOwner() const;
 
     const string &getGenere() const;
 
@@ -31,12 +35,13 @@ public:
 
     string setpreviousOwner(string);
 
+    bool empty();
+
 private:
     string name;
-    bool currentlyOnInventory;
     string previousOwner;
     string genere;
-
+    bool currentlyOnInventory;
 };
 
 

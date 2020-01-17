@@ -13,14 +13,14 @@ class KeyboardReader {
 public:
 //    KeyboardReader(ConnectionHandler& _handler);
 
-    KeyboardReader(ConnectionHandler &_handler, Client _client);
+    KeyboardReader(ConnectionHandler &_handler, Client& _client);
 
     void run();
     void close();
 private:
     ConnectionHandler& handler;
     int subId;
-    Client client;
+    Client& client;
     bool loggedIn;
 
 };
