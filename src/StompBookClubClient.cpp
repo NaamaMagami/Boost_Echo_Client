@@ -70,6 +70,7 @@ int main (int argc, char *argv[]) {
 
             if (!(handler->getLine(command))) {
                 cout << "Could not connect to server**" << endl;
+                shineOnYouCrazyDiamond=false;
                 handler->close();
             }
             else{
@@ -85,14 +86,16 @@ int main (int argc, char *argv[]) {
                     string firstWord = words[0];
 
                     if (firstWord == "ERROR") {
-                        string user = words[2].substr(8,11);
-                        string wrong = words[2].substr(8,12);
-                        if (user=="User") {
-                            cout<<"User already logged in"<<endl;
-                        }
-                        else if (wrong =="Wrong") {
-                            cout<<"Wrong password"<<endl;
-                        }
+
+                      if(words[1].at(0)=='r'){
+                          string output=words[2].substr(8,words[2].length());
+                         cout<<output<<endl;
+                      }
+                      else{
+                          string output=words[1].substr(8,words[1].length());
+                          cout<<output <<endl;
+                      }
+                        shineOnYouCrazyDiamond=false;
                         handler->close();
                     }
                     else if (firstWord == "CONNECTED") {
