@@ -59,7 +59,7 @@ void KeyboardReader::run(){
                             "receipt:" + to_string(thisR) + "\n"
                                                             "\n";
 
-                client.addMessage(thisR, "exit " + command[1]);
+                client.addMessage(thisR, "exit " +command[1]);
                 handler.sendLine(msgToSend);
                 client.removeFromTopicsAndSubsId(command[1]);
             }
@@ -158,7 +158,6 @@ void KeyboardReader::run(){
                 handler.sendLine(msgToSend);
                 loggedIn=false;
             }
-//login 132.72.45.155:7777 left 12
 
         }
     cout<< "finished while"<<endl;

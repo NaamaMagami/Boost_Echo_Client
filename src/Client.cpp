@@ -166,7 +166,7 @@ Book* Client::containedBeforeBook(string bookName) {
 
 }
 
-//login 132.72.45.155:7777 left 12
+//login 132.72.45.170:7777 neta 123
 void Client::removeBook(string genere,Book * book) {
     cout<<"enterd remove book "+book->getName()<<endl;
     vector<Book*>::iterator iter;

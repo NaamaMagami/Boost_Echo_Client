@@ -23,9 +23,10 @@ int main (int argc, char *argv[]) {
         const short bufsize = 1024;
         char buf[bufsize];
         try {
+            cout<<"WTFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFf"<<endl;
             cin.getline(buf, bufsize);
         }catch(exception){
-            cout<<"catch main<<endl;";
+            cout<<"catch main"<<endl;
         }
         string line(buf);
         int len = line.length();
@@ -110,14 +111,19 @@ int main (int argc, char *argv[]) {
                         cout<<"socked finish"<<endl;
 
                         client->clearClient();
-
+                        cout<<"clearClient finish"<<endl;
                         handler->close();
+                        cout<<"handler finish"<<endl;
                         delete(socketReader);
+                        cout<<" delete(socketReader)"<<endl;
                         delete(keyboardReader);
+                        cout<<"(keyboardReader)"<<endl;
                         delete(client);
+                        cout<<"delete(client)"<<endl;
 
                         shineOnYouCrazyDiamond=false;
-                        break;
+                        cout<<shineOnYouCrazyDiamond<<endl;
+
                     }
                 }
 
